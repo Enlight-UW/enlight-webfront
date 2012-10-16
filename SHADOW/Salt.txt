@@ -1,0 +1,16 @@
+lVZZ`F}x(`,6/GHi*##$67$]c.w=dm:pR3c10u5AnDfR4g113tH1ng5n3Ed5p3c141H4nD1InG:kr*>M@v|pkL{P)50?V}QMf+yKg=vz6eX3L
+
+This is the salt that is prepended to user passwords server-side to mitigate the
+effectiveness of rainbow tables.
+
+It is EXTREMELY important that this file not be distributed or visible to the
+public, since the rest of system is open-source and this file is the only thing
+preventing someone from setting up a massive offline attack on hashed user
+passwords.
+
+Of course, they'd need to get the user passwords from the database first,
+but assuming that that is compromised, that isn't completely hard to fathom
+(directory-wide permissions/htaccess mishap could do it).
+
+Anyway, the top line here should be something quite long (64+ or so chars)
+and consist of fairly entropic data (grc's generator is a good one).

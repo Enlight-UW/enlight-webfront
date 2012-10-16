@@ -1,0 +1,11 @@
+/* 
+    Document   : webfront
+    Created on : Oct 14, 2012, 1:02:08 AM
+    Author     : Alex Kersten
+    Description:
+            Custom tweaks to the default bootstrap stylesheet.
+*/
+
+body {
+    margin: 16px;
+}

@@ -1,0 +1,5 @@
+The files in this folder are intended for internal use by the server, so the
+user should never really be brought to any page inside the php/ directory.
+
+All of the user-interactive stuff should be served by either top-level
+files or possibly something from modules/.

@@ -1,0 +1,55 @@
+@import url(http://fonts.googleapis.com/css?family=Armata|Crimson+Text);
+
+/* Login page background and whole-page style. */
+body {
+    background-color: #060606;
+    background-image: url('../img/backgroundBloom.png');
+    background-position: center top;
+    background-repeat: no-repeat;
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Crimson Text', serif;
+    color: #EEE;
+}
+
+/* Banner on the login page */
+h1#maquinaBanner {
+    font-family: 'Armata', sans-serif;
+    font-size: 48px;
+    margin-top: 150px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 16px;
+    text-align: center;
+    padding: 0px;
+    text-shadow: 0px 0px 8px #AAA; 
+}
+
+/* The p blocks on the login page */
+p.landing {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 18px;
+    text-align: center;
+    padding: 6px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    /*   text-shadow: 0px 0px 2px #AAA; */
+}
+
+/* Input form on login page */
+form.landing {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Password input on login page */
+form.landing .textInput {
+    width: 100%;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 16px;
+}
