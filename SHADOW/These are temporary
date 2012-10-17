@@ -1,1 +1,3 @@
 These are temporary passwords and salts and will be changing before production.
+
+When we transition to production, don't upload anything in the shadow directory...
