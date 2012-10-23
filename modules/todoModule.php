@@ -13,8 +13,12 @@
 
 
 //Check for any AJAX posted to this page...
-if (isset($_POST['ajax_get_messages'])) {
+if (isset($_POST['ajax_get_todoList'])) {
     require "../php/startDatabase.php";
+
+    if (!isset($_SESSION['AUTHORIZED'])) {
+        die("Not authorized.");
+    }
 
 
     $state = $_SESSION['db']->prepare("SELECT * FROM `todo` ORDER BY `priority` DESC");
@@ -38,47 +42,22 @@ class todoModule extends module {
 
     function getInnerContent() {
         return '
-            <script type="text/javascript">
-            function refreshTodoList() {
-                //Clear existing todo list
-                document.getElementById(\'todoList\').innerHTML = "";
-
-                var xml;
-                
-                //Get new HTML from server.
-                if (window.XMLHttpRequest) {
-                    xml = new XMLHttpRequest();
-                }
-                
-                xml.onreadystatechange=function() {
-                    if (xml.readyState==4 && xml.status==200) {
-                        document.getElementById(\'todoList\').innerHTML=xml.responseText;
-                    }
-                }
-                
-                xml.open("POST", "modules/todoModule.php", true);
-                xml.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-                xml.send("ajax_get_messages=true");
-                
-            }
-            
-            </script>
-            
-
-  <p>Todo is our own private laundry list of maintenance-related things for Enlight. We can put things like "order new bubble tubes" or "whip it out" here. If it\'s a bug with Webfront or the server, it goes on the GitHub issue tracker.</p>
-<h3>Create New</h3>
-<h3>Current Todo List</h3>
-<a href="#" onclick="refreshTodoList()">Refresh (debug)</a>
-<table class="table table-hover" id="todoList">
+            <script src="js/modules/todoModule.js"></script>           
+            <p>Todo is our own private laundry list of maintenance-related things for Enlight. We can put things like "order new bubble tubes" or "whip it out" here. If it\'s a bug with Webfront or the server, it goes on the GitHub issue tracker.</p>
+            <h3>Create New</h3>
+            <p>TODO: Input form here.</p>
+            <h3>Current Todo List</h3>
+            <a href="#" onclick="refreshTodoList()">Refresh (debug)</a>
+            <table class="table table-hover" id="todoList">
 
 
-<tr>
-    <th>User</th>
-    <th>Date</th>
-    <th>Goal</th>
-    <th>Priority</th>
-    <th>Actions</th>
-</tr>
+            <tr>
+                <th>User</th>
+                <th>Date</th>
+                <th>Goal</th>
+                <th>Priority</th>
+                <th>Actions</th>
+            </tr>
 
 
 
