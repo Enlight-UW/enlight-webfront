@@ -29,8 +29,8 @@ function postTodoItem() {
     
     //TODO: Check to make sure & and other special characters aren't breaking 
     //the URL here.
-    var goalText = document.getElementById('todoGoalText').getAttribute('value');
-    var priorityText = document.getElementById('todoPriorityText').getAttribute('value');
+    var goalText = $('#todoGoalText').val();
+    var priorityText = $('#todoPriorityText').val();
     
     
     

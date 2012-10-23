@@ -30,9 +30,18 @@ if (isset($_POST['ajax_get_todoList'])) {
     $state->execute();
     $result = $state->get_result();
 
+    echo '            <tr>
+                <th>User</th>
+                <th>Date</th>
+                <th>Goal</th>
+                <th>Priority</th>
+                <th>Actions</th>
+            </tr>
+';
+
     while ($row = $result->fetch_assoc()) {
         //TODO (Tuesday project?!) - format this nicely.
-        echo $row['name'] . " " . $row['time'] . " " . $row['goal'] . " " . $row['priority'];
+        echo '<tr><td>' . $row['name'] . "</td><td>" . $row['time'] . "</td><td>" . $row['goal'] . "</td><td>" . $row['priority'] . "</td></tr>";
     }
 
     //Exit unless you want it to uselessly evaluate class inheritance...
@@ -66,14 +75,48 @@ class todoModule extends module {
             <script src="js/modules/todoModule.js"></script>           
             <p>Todo is our own private laundry list of maintenance-related things for Enlight. We can put things like "order new bubble tubes" or "whip it out" here. If it\'s a bug with Webfront or the server, it goes on the GitHub issue tracker.</p>
             <h3>Add Item</h3>
-            <form>
-                <h6>Goal</h6>
-                <textarea type="textarea" name="todoGoal" id="todoGoalText">Enter goal here...</textarea>
-                <h6>Priority</h6>
-                <input type="text" name="todoPriority" value="1" id="todoPriorityText" />
-                <input type="submit" name="todoTriggerJSSubmit" onclick="postTodoItem()" />
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <p class="control-label">Goal</p>
+                    <div class="controls">
+                        <textarea type="textarea" name="todoGoal" id="todoGoalText"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <p class="control-label">Priority</p>
+                    <div class="controls">
+                        <label class="radio">
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" onclick="$(\'#todoPriorityText\').val(1)">
+                            <span class="label">Eventually</span>
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"  onclick="$(\'#todoPriorityText\').val(2)" checked>
+                            <span class="label label-info">Low</span>
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3"  onclick="$(\'#todoPriorityText\').val(3)">
+                            <span class="label label-warning">Medium</span>
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="optionsRadios" id="optionsRadios4" value="option4" onclick="$(\'#todoPriorityText\').val(4)">
+                            <span class="label label-important">High</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <p class="control-label">Ready?</p>
+                    <div class="controls">
+                        <a href="#" class="btn btn-primary" onclick="postTodoItem()">Add</a>
+                    </div>
+                </div>
+
+            <input type="text" name="todoPriority" value="2" id="todoPriorityText" style="display: none;"/>
             </form>
-            <p>TODO: Input form here.</p>
+            
+
+            
             
             <h3>Current Todo List</h3>
             
