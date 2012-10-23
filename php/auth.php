@@ -18,4 +18,5 @@ if (!isset($_SESSION['AUTHORIZED'])) {
     header('Location: index.php');
     exit();
 }
+
 ?>

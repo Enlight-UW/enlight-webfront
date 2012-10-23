@@ -41,4 +41,5 @@ for ($i = 0; $i < sizeof($_SESSION['modules']); $i++) {
 
 
 require "globalFooter.php";
+
 ?>
