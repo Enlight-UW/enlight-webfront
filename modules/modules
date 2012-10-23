@@ -2,5 +2,8 @@ If you add a new module, please do the following in order to make sure it works:
 
 (1) Extend module.php's base class
 (2) Implement the content-providing method
-(3) Add your module file to imports.php in /php
-(4) Add your module file to session.php in /php
+(3) Add your module file to session.php in /php
+
+That's all! (Unless you're extending a module _other than_ the base module, in
+which case, look at the note in /php/imports.php. Not that you should be doing
+that...)

@@ -16,13 +16,15 @@
 if (isset($_POST['ajax_get_messages'])) {
     require "../php/startDatabase.php";
 
-    $state = $_SESSION['db']->prepare("SELECT `name`, `time`, `goal`, `priority` FROM `todo` ORDER BY `priority` DESC");  
+
+    $state = $_SESSION['db']->prepare("SELECT * FROM `todo` ORDER BY `priority` DESC");
     $state->execute();
-    $state->bind_result($name, $time, $goal, $priority);
-    
-    
-    //TODO: Echo proper table structure..
-    echo $name . " " . $time . " " . $goal . " " . $priority;
+    $result = $state->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        //TODO (Tuesday project?!) - format this nicely.
+        echo $row['name'] . " " . $row['time'] . " " . $row['goal'] . " " . $row['priority'];
+    }
 
     //Exit unless you want it to uselessly evaluate class inheritance...
     exit(0);
