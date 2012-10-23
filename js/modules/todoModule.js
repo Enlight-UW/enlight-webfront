@@ -11,12 +11,7 @@ function refreshTodoList() {
     //Clear existing todo list
     document.getElementById('todoList').innerHTML = "";
 
-    var xml;
-                
-    //Get new HTML from server.
-    if (window.XMLHttpRequest) {
-        xml = new XMLHttpRequest();
-    }
+    var xml = getAjaxObject();
                 
     xml.onreadystatechange=function() {
         if (xml.readyState==4 && xml.status==200) {
@@ -30,11 +25,19 @@ function refreshTodoList() {
 }
 
 function postTodoItem() {
-    var xml;
+    var xml = getAjaxObject();
     
-    if (window.XMLHttpRequest) {
-        xml = new XMLHttpRequest();
-    }
+    //TODO: Check to make sure & and other special characters aren't breaking 
+    //the URL here.
+    var goalText = document.getElementById('todoGoalText').getAttribute('value');
+    var priorityText = document.getElementById('todoPriorityText').getAttribute('value');
+    
+    
+    
+    xml.open("POST", "modules/todoModule.php", true);
+    xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    
+    xml.send("ajax_post_todoItem=true&todoPriority=" + priorityText + "&todoGoal=" + goalText);
 }
 
 function resolveTodoItem() {
