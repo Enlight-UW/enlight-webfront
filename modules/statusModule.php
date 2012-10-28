@@ -25,31 +25,24 @@ class statusModule extends module {
            state of things, as far as the server is concerned. Not to say that
            things couldn\'t appear fine here yet still be broken, though.</p>
            
-            <h3>Server Status</h3>
-            <span class="label">Unknown/Down</span>
-            <span class="label">Idle</span>
-            <span class="label label-success">Default Pattern</span>
-            <span class="label">Override</span>
-            
-            <h3>cRIO Sensors</h3>
-            
-            
-            <span class="label label-warning">Manhole Cover</span>
-            <span class="label label-warning">Spillway Water Level High</span>
-            <span class="label label-important">Undocumented Malfunction/Communication Breakdown</span>
-
-
-
-
-
-
-
-
-
-
-
-
-
+            <dl class="dl-horizontal">
+                <dt>Fountain Status</dt>
+                <dd>
+                    <span class="label">Local Server Unreachable</span>
+                    <span class="label">cRIO Unreachable</span>
+                    <span class="label">cRIO in Error State</span><br />
+                    <span class="label">Idle</span><br />
+                    <span class="label label-success">Default Pattern</span>
+                    <span class="label">Patterns</span>
+                    <span class="label">API Override</span>
+                </dd>
+                <br />
+                <dt>cRIO Sensors</dt>
+                <dd>
+                    <span class="label label-warning">Manhole Cover</span><br />
+                    <span class="label label-important">Spillway Water Level</span><br />
+                </dd>
+            </dl>
 ';
     }
 

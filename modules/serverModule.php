@@ -25,7 +25,7 @@ class serverModule extends module {
             <a href="#" class="btn btn-primary btn-small" id="TOGGLE_IDLE">Toggle Idleness</a>
         </dt>
         <dd>
-            Toggle the server from Idle to Default Patterns (or other overriding control). Useful for maintenance or to gently stop the fountain if wetness is momentarily unappreciated.
+            Toggle the server between Idle and Patterns (or current override). Useful for maintenance or to gently stop the fountain if wetness is momentarily unappreciated.
             Check on the Status page to see the current state of the fountain.
         </dd>
 <br />
