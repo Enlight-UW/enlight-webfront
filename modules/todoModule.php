@@ -5,18 +5,18 @@
  * File: todoModule.php
  * Author: Alex Kersten
  * 
- * Module for keeping a todo list. Be sure to update the GitHub wiki if/when you
- * change the tables/cols this thing uses in the DB.
+ * Module for keeping a todo list. The format of the SQL table is the following:
+ * todo [ id | time | priority | name | goal | resolver ]
+ *       pkey tstamp        int   text   text       text
  * 
- * Table is named `todo` with cols `id` `time` `priority` `name` `goal`
+ * If resolver is set, the item is considered resolved and will display the name
+ * of the resolver next to it. id and time are set by the database.
  */
 
 
-/*
- * The first thing we'll do is check for anything AJAX'd to this page and
- * verify session credentials. The calls here come from clientside code in
- * /js/modules/todoModule.js
- */
+// The first thing we'll do is check for anything AJAX'd to this page and
+// verify session credentials. The calls here come from clientside code
+// /js/modules/todoModule.js
 
 if (isset($_POST['ajax_get_todoList'])) {
     require "../php/startDatabase.php";
@@ -26,27 +26,62 @@ if (isset($_POST['ajax_get_todoList'])) {
     }
 
 
-    $state = $_SESSION['db']->prepare("SELECT * FROM `todo` ORDER BY `priority` DESC");
+    $state = $_SESSION['db']->
+            prepare("SELECT * FROM `todo` ORDER BY `resolver` ASC, `priority` DESC, `time` DESC");
+
     $state->execute();
     $result = $state->get_result();
 
-    echo '            <tr>
-                <th>User</th>
-                <th>Date</th>
-                <th>Goal</th>
-                <th>Priority</th>
-                <th>Actions</th>
-            </tr>
-';
+    echo '<tr>
+            <th>#</th>
+            <th>User</th>
+            <th>Date</th>
+            <th>Goal</th>
+            <th>Priority</th>
+            <th>Action</th>
+          </tr>';
 
     while ($row = $result->fetch_assoc()) {
-        //TODO (Tuesday project?!) - format this nicely.
-        echo '<tr><td>' . $row['name'] . "</td><td>" . $row['time'] . "</td><td>" . $row['goal'] . "</td><td>" . $row['priority'] . "</td></tr>";
+        echo '<tr><td>' . $row['id'] . '</td><td>' .
+        htmlspecialchars($row['name']) . '</td><td>' . $row['time'] .
+        '</td><td>' . htmlspecialchars($row['goal']) . '</td><td>';
+
+        if ($row['resolver'] != '') {
+            //It's resolved.
+            echo '<span class="label label-success"><i class="icon-ok icon-white"></i> Resolved</span></td><td>';
+            echo '<span class="label label-success">'
+            . htmlspecialchars($row['resolver']) . '</span></td></tr>';
+        } else {
+            //Switch on the priority to decide the color of the label...
+            $labelStr = '<span class="label ';
+
+            switch ($row['priority']) {
+                case 1:
+                    $labelStr .= '">Eventually</span>';
+                    break;
+                case 2:
+                    $labelStr .= 'label-info">Low</span>';
+                    break;
+                case 3:
+                    $labelStr .= 'label-warning">Medium</span>';
+                    break;
+                case 4:
+                    $labelStr .= 'label-important">High</span>';
+                    break;
+                default:
+                    $labelStr .= 'label-inverse">The Situation</span>';
+            }
+
+            echo $labelStr . '</td><td>';
+            echo '<a href="#" class="btn btn-small" onclick="resolveTodoItem(' .
+            $row['id'] .
+            ');refreshTodoList();"><i class="icon-ok"></i> Done!</a></td></tr>';
+        }
     }
 
-    //Exit unless you want it to uselessly evaluate class inheritance...
     exit(0);
 }
+
 
 if (isset($_POST['ajax_post_todoItem'])) {
     require "../php/startDatabase.php";
@@ -55,10 +90,33 @@ if (isset($_POST['ajax_post_todoItem'])) {
         die("Not authorized.");
     }
 
-    $state = $_SESSION['db']->prepare("INSERT INTO `todo` (`priority`, `name`, `goal`) VALUES (?,?,?)");
+    $state = $_SESSION['db']->prepare("INSERT INTO `todo` (`priority`, `name`, `goal`) VALUES (?, ?, ?)");
 
-    //TODO: Make sure prepared statements are actually sanitizing this!
-    $state->bind_param("iss", $_POST['todoPriority'], $_SESSION['USERNAME'], $_POST['todoGoal']);
+    $state->bind_param("iss", base64_decode($_POST['todoPriority']), $_SESSION['USERNAME'], base64_decode($_POST['todoGoal']));
+    $state->execute();
+
+    exit(0);
+}
+
+
+if (isset($_POST['ajax_resolve_todoItem'])) {
+    require "../php/startDatabase.php";
+
+    if (!isset($_SESSION['AUTHORIZED'])) {
+        die("Not authorized.");
+    }
+
+    $itemId = base64_decode($_POST['ajax_resolve_todoItem']);
+
+    //Check that that's actually an integer
+    if (intval($itemId < 1)) {
+        die("No such item.");
+    }
+
+    $itemId = intval($itemId);
+
+    $state = $_SESSION['db']->prepare("UPDATE `todo` SET `resolver` = ? WHERE `id` = ?");
+    $state->bind_param("si", $_SESSION['USERNAME'], $itemId);
     $state->execute();
 
     exit(0);
@@ -72,14 +130,16 @@ class todoModule extends module {
 
     function getInnerContent() {
         return '
-            <script src="js/modules/todoModule.js"></script>           
+            <script src="js/modules/todoModule.js"></script>
+            
             <p>Todo is our own private laundry list of maintenance-related things for Enlight. We can put things like "order new bubble tubes" or "whip it out" here. If it\'s a bug with Webfront or the server, it goes on the GitHub issue tracker.</p>
-            <h3>Add Item</h3>
+            
+            <h3>Add Todo Item</h3>
             <form class="form-horizontal">
                 <div class="control-group">
                     <p class="control-label">Goal</p>
                     <div class="controls">
-                        <textarea type="textarea" name="todoGoal" id="todoGoalText"></textarea>
+                        <textarea name="todoGoal" id="todoGoalText" style="width: 95%;" rows="6"></textarea>
                     </div>
                 </div>
 
@@ -106,73 +166,32 @@ class todoModule extends module {
                 </div>
                 
                 <div class="control-group">
-                    <p class="control-label">Ready?</p>
+                    <p class="control-label"></p>
                     <div class="controls">
-                        <a href="#" class="btn btn-primary" onclick="postTodoItem()">Add</a>
+                        <a href="#" class="btn btn-primary btn-small" onclick="
+                        postTodoItem();
+                        $(\'#todoGoalText\').val(\'\');
+                        refreshTodoList();">Post New Todo</a>
                     </div>
                 </div>
 
-            <input type="text" name="todoPriority" value="2" id="todoPriorityText" style="display: none;"/>
+                <input type="text" name="todoPriority" value="2" id="todoPriorityText" style="display: none;"/>
             </form>
-            
 
-            
-            
+         
             <h3>Current Todo List</h3>
+            <a href="#" onclick="refreshTodoList()" class="btn btn-small"><i class="icon-refresh"></i> Refresh List</a><br /><br />
             
-            
-            <a href="#" onclick="refreshTodoList()">Refresh (debug)</a>
-            
-
-            <table class="table table-hover" id="todoList">
-
-
-            <tr>
-                <th>User</th>
-                <th>Date</th>
-                <th>Goal</th>
-                <th>Priority</th>
-                <th>Actions</th>
-            </tr>
-
-
-
-
-
-<tr>
-    <td>Alex</td>
-    <td>6.11.2015</td>
-    <td>Avoid being added to the "manhole cover open" mailing list</td>
-    <td><span class="label label-warning">Medium</span></td>
-    <td><a href="#" class="btn btn-mini">Done!</a></td>
-</tr>
-
-<tr>
-    <td>Dustin</td>
-    <td>10.11.2012</td>
-    <td>Finish the amazing polish the student shop did on the fountain before graduating</td>
-    <td><span class="label label-info">Low</span></td>
-    <td><a href="#" class="btn btn-mini">Done!</a></td>
-</tr>
-
-<tr>
-    <td>PHP</td>
-    <td>1.1.1970</td>
-    <td>Write good code</td>
-    <td><span class="label">Eventually</span></td>
-    <td><a href="#" class="btn btn-mini">Done!</a></td>
-</tr>
-
-<tr>
-    <td>Depeche Mode</td>
-    <td>10.23.12</td>
-    <td>Release an awesome new studio album and announce world tour dates. Also, clean the spillway.</td>
-    <td><span class="label label-important">High</span></td>
-    <td><a href="#" class="btn btn-mini">Done!</a></td>
-</tr>
-
-
-</table>
+            <!-- This table will be populated via the JS -->
+            <table class="table table-striped" id="todoList">
+                <tr>
+                    <th>User</th>
+                    <th>Date</th>
+                    <th>Goal</th>
+                    <th>Priority</th>
+                    <th>Actions</th>
+                </tr>
+            </table>
             
 
             <script type="text/javascript">

@@ -3,36 +3,46 @@
  * File: todoModule.js
  * Author: Alex Kersten
  * 
- * Clientside JS for ajaxing to the server from the todo module.
+ * Clientside JS for ajaxing to the server from the todo module. All of the user
+ * input here will obviously be checked server-side to prevent terrible things
+ * from happening to our precious database, so don't worry about any of these
+ * functions.
  */
 
 
 function refreshTodoList() {
-    //Clear existing todo list
-    document.getElementById('todoList').innerHTML = "";
-
     var xml = getAjaxObject();
                 
     xml.onreadystatechange=function() {
         if (xml.readyState==4 && xml.status==200) {
-            document.getElementById('todoList').innerHTML=xml.responseText;
-        }
+            //Clear existing todo list
+            document.getElementById('todoList').innerHTML = "";
+
+            //Replace it.
+            document.getElementById('todoList').innerHTML=xml.responseText; 
+       }
     }
                 
     xml.open("POST", "modules/todoModule.php", true);
     xml.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    
     xml.send("ajax_get_todoList=true");
 }
 
 function postTodoItem() {
     var xml = getAjaxObject();
     
-    //TODO: Check to make sure & and other special characters aren't breaking 
-    //the URL here.
     var goalText = $('#todoGoalText').val();
     var priorityText = $('#todoPriorityText').val();
     
+    //Base 64 them, so that the & character works correctly, since we're POSTing
+    //this string.
+    goalText = $.base64.encode(goalText);
+    priorityText = $.base64.encode(priorityText);
     
+    if (goalText == "") {
+        return;
+    }
     
     xml.open("POST", "modules/todoModule.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -40,6 +50,18 @@ function postTodoItem() {
     xml.send("ajax_post_todoItem=true&todoPriority=" + priorityText + "&todoGoal=" + goalText);
 }
 
-function resolveTodoItem() {
+function resolveTodoItem(id) {
+    var xml = getAjaxObject();
     
+    if (id < 1) {
+        //Not an integer
+        return;
+    }
+    
+    id = $.base64.encode(id + "");
+    
+    xml.open("POST", "modules/todoModule.php", true);
+    xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+   
+    xml.send("ajax_resolve_todoItem=" + id);
 }

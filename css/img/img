@@ -1,0 +1,2 @@
+This directory is here because it's where bootstrap will look for the image icon
+files (../img/*). Not much we can do about that.
