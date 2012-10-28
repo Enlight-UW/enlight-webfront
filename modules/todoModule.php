@@ -75,7 +75,7 @@ if (isset($_POST['ajax_get_todoList'])) {
             echo $labelStr . '</td><td>';
             echo '<a href="#" class="btn btn-small" onclick="resolveTodoItem(' .
             $row['id'] .
-            ');setTimeout(\'refreshTodoList()\', 500);"><i class="icon-ok"></i> Done!</a></td></tr>';
+            ');setTimeout(\'refreshTodoList()\', 500); return false;"><i class="icon-ok"></i> Done!</a></td></tr>';
         }
     }
 
@@ -171,7 +171,7 @@ class todoModule extends module {
                         <a href="#" class="btn btn-primary btn-small" onclick="
                         postTodoItem();
                         $(\'#todoGoalText\').val(\'\');
-                        setTimeout(\'refreshTodoList()\', 500);">Post New Todo</a>
+                        setTimeout(\'refreshTodoList()\', 500); return false;">Post New Todo</a>
                     </div>
                 </div>
 
@@ -180,7 +180,7 @@ class todoModule extends module {
 
          
             <h3>Current Todo List</h3>
-            <a href="#" onclick="refreshTodoList()" class="btn btn-small"><i class="icon-refresh"></i> Refresh List</a><br /><br />
+            <a href="#" onclick="refreshTodoList(); return false;" class="btn btn-small"><i class="icon-refresh"></i> Refresh List</a><br /><br />
             
             <!-- This table will be populated via the JS -->
             <table class="table table-striped" id="todoList">
