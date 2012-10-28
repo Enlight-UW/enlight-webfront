@@ -18,7 +18,8 @@ class statusModule extends module {
 
     function getInnerContent() {
         return
-                '<p>This is the status page, where all relevant live statistics
+                '<h2>World View</h2>
+                    <p>This is the status page, where all relevant live statistics
            of the fountain and related software will be represented. These
            statistics are refreshed in real-time as the server finds out about
            changes, so what you\'re seeing here is a true reflection of the
@@ -26,7 +27,7 @@ class statusModule extends module {
            things couldn\'t seem fine here yet still be broken, though.</p>
            
             <dl class="dl-horizontal">
-                <dt>Fountain Status</dt>
+                <dt>Server State</dt>
                 <dd>
                     <span class="label">Local Server Unreachable</span>
                     <span class="label">Local Server in Error State</span>

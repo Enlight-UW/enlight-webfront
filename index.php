@@ -91,7 +91,7 @@ if (isset($_POST['PASSWORD'])) {
             document.getElementById("noJS").style.display = "none";
             document.getElementById("usernameField").style.display = "block";
             document.getElementById("plaintextField").style.display = "block";
-            document.getElementById("loginButton").style.display = "inline";
+            //document.getElementById("loginButton").style.display = "inline";
         </script>
 
         <?php

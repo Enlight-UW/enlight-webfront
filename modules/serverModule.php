@@ -16,7 +16,7 @@ class serverModule extends module {
     }
 
     function getInnerContent() {
-        return '
+        return '<h2>Get Personal</h2>
     <p>Here you can perform various operations on the server. These shouldn\'t really need to be used that often, but if something goes horribly wrong then these might come in handy.</p>
     <!-- TODO: Make these "buttons" ajax-y -->
     

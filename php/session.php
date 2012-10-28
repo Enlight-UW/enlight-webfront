@@ -40,7 +40,8 @@ require "php/startDatabase.php";
 if (!isset($_SESSION['modules'])) {
 
     $_SESSION['modules'] = array(new statusModule(), new todoModule(),
-        new serverModule(), new interactiveModule(), new adminModule());
+        new patternsModule(), new interactiveModule(), new serverModule(),
+        new adminModule());
 
     //Default module is the first one.
     $_SESSION['currentModule'] = 0;

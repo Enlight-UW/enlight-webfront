@@ -16,7 +16,7 @@ class adminModule extends module {
     }
 
     function getInnerContent() {
-        return 'nothing here yet';
+        return '<h2>Policy Details</h2>';
     }
 
 }

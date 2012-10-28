@@ -17,7 +17,7 @@ class interactiveModule extends module {
     }
 
     function getInnerContent() {
-        return '
+        return '<h2>Enjoy The Fountain</h2>
   <p>The (future) home of LMOC 2.0, the "Local" Maintenance and Override Console. Version 2.0 means web-based control!</p><p class="muted">Working on it...</p>
 
 ';

@@ -131,7 +131,8 @@ class todoModule extends module {
     function getInnerContent() {
         return '
             <script src="js/modules/todoModule.js"></script>
-            
+            <!--<h2>Goals, Hopes &amp; Dreams</h2>-->
+            <h2>Waiting For&hellip;</h2>
             <p>Todo is our own private laundry list of maintenance-related things for Enlight. We can put things like "order new bubble tubes" or "whip it out" here. If it\'s a bug with Webfront or the server, it goes on the GitHub issue tracker.</p>
             
             <h3>Add Todo Item</h3>

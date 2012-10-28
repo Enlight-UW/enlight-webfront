@@ -13,7 +13,7 @@ class templateModule extends module {
     }
 
     function getInnerContent() {
-        
+        return '<h2>Attention grabber</h2>';
     }
 
 }
