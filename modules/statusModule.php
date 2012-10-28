@@ -34,8 +34,8 @@ class statusModule extends module {
                     <span class="label">cRIO in Error State</span><br />
                     <span class="label">Idle</span><br />
                     <span class="label label-success">Default Pattern</span>
-                    <span class="label">Patterns</span>
-                    <span class="label">API Override</span>
+                    <span class="label">Pattern:</span>
+                    <span class="label">API Override:</span>
                 </dd>
                 <br />
                 <dt>cRIO Sensors</dt>
