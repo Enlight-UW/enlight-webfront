@@ -39,8 +39,8 @@ require "php/startDatabase.php";
 //here will affect the order in which these appear on the navbar.
 if (!isset($_SESSION['modules'])) {
 
-    $_SESSION['modules'] = array(new statusModule(), new serverModule(),
-        new interactiveModule(), new todoModule(), new adminModule());
+    $_SESSION['modules'] = array(new statusModule(), new todoModule(),
+        new serverModule(), new interactiveModule(), new adminModule());
 
     //Default module is the first one.
     $_SESSION['currentModule'] = 0;
