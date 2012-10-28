@@ -75,7 +75,7 @@ if (isset($_POST['ajax_get_todoList'])) {
             echo $labelStr . '</td><td>';
             echo '<a href="#" class="btn btn-small" onclick="resolveTodoItem(' .
             $row['id'] .
-            ');refreshTodoList();"><i class="icon-ok"></i> Done!</a></td></tr>';
+            ');setTimeout(\'refreshTodoList()\', 500);"><i class="icon-ok"></i> Done!</a></td></tr>';
         }
     }
 
@@ -171,7 +171,7 @@ class todoModule extends module {
                         <a href="#" class="btn btn-primary btn-small" onclick="
                         postTodoItem();
                         $(\'#todoGoalText\').val(\'\');
-                        refreshTodoList();">Post New Todo</a>
+                        setTimeout(\'refreshTodoList()\', 500);">Post New Todo</a>
                     </div>
                 </div>
 
