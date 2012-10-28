@@ -22,13 +22,14 @@ class statusModule extends module {
            of the fountain and related software will be represented. These
            statistics are refreshed in real-time as the server finds out about
            changes, so what you\'re seeing here is a true reflection of the
-           state of things, as far as the server is concerned. Not to say that
-           things couldn\'t appear fine here yet still be broken, though.</p>
+           state of things, as far as the Webfront is concerned. Not to say that
+           things couldn\'t seem fine here yet still be broken, though.</p>
            
             <dl class="dl-horizontal">
                 <dt>Fountain Status</dt>
                 <dd>
                     <span class="label">Local Server Unreachable</span>
+                    <span class="label">Local Server in Error State</span>
                     <span class="label">cRIO Unreachable</span>
                     <span class="label">cRIO in Error State</span><br />
                     <span class="label">Idle</span><br />
