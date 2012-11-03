@@ -39,26 +39,40 @@ class patternsModule extends module {
 
             
             <!-- Editor and sidebar -->
-            <div class="row">
-                <div class="span2">
-                    <!-- TODO: Page can get messy if the names of patterns are too long -->
-                    <div class="btn-group btn-group-vertical">
-                        <a class="btn btn-mini" href="#">Default Pattern</a>
-                        <a class="btn btn-mini" href="#">Slightly Longer Pattern</a>
-                        <a class="btn btn-mini" href="#">Summer Pattern</a>
-                        <a class="btn btn-mini" href="#">Awesome Pattern</a>
+
+                    <div class="btn-toolbar">
+                        <div class="btn-group">
+                            <a class="btn" href="#"><i class="icon-asterisk"></i> New Pattern</a>
+                        </div>
+                        <div class="btn-group">
+                            <div class="btn-group">
+                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="icon-hdd"></i> Load Pattern For Editing <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Jacob\'s Ladder</a></li>
+                                    <li><a href="#">Spin Cycle</a></li>
+                                    <li><a href="#">Another Cutesy Name</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="btn-group">
+                            <a class="btn" href="#"><i class="icon-heart"></i> Save As:</a>
+                            <a class="btn" href="#"><i class="icon-pencil"></i> Untitled Pattern</a>
+                        </div>
+                        
+                        <div class="btn-group">
+                            <a class="btn" href="#" onclick="return false;"><i class="icon-fire"></i> Delete Pattern File</a>
+                        </div>
                     </div>
-                </div>
-                <div class="span10">
-                    <!-- Editor buttons -->
-                    <div class="btn-group">
-                        <a class="btn btn-primary" href="#"><i class="icon-heart"></i> Save As:</a>
-                        <a class="btn" href="#"><i class="icon-pencil"></i> Untitled Pattern</a>
-                    </div>
-                    
+     
                     <!-- Editor canvas -->
-                </div>
-            </div>
+                    <canvas id="patternEditorCanvas" style="border:1px solid #CFCCCD; width: 100%; height: 300px;">
+                    </canvas>
+ 
+
+
          </div>
         ';
     }

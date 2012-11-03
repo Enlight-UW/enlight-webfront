@@ -25,7 +25,7 @@ class statusModule extends module {
            changes, so what you\'re seeing here is a true reflection of the
            state of things, as far as the Webfront is concerned. Not to say that
            things couldn\'t seem fine here yet still be broken, though.</p>
-           
+           <div class="well">
             <dl class="dl-horizontal">
                 <dt>Server State</dt>
                 <dd>
@@ -45,6 +45,7 @@ class statusModule extends module {
                     <span class="label label-important">Spillway Water Level</span><br />
                 </dd>
             </dl>
+          </div>
 ';
     }
 
