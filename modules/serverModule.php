@@ -19,7 +19,7 @@ class serverModule extends module {
         return '<h2>Get Personal</h2>
     <p>Here you can perform various operations on the server. These shouldn\'t really need to be used that often, but if something goes horribly wrong then these might come in handy.</p>
     <!-- TODO: Make these "buttons" ajax-y -->
-    
+    <div class="well">
     <dl class="dl-horizontal">
         <dt>
             <a href="#" class="btn btn-primary btn-small" id="TOGGLE_IDLE">Toggle Idleness</a>
@@ -44,7 +44,7 @@ class serverModule extends module {
         </dt>
         <dd>
             Restarts the underlying C++ server, which should cause it to re-establish a connection to the cRIO and may prove useful in diagnosing a low-level problem. The Webfront may become
-            temporarily unavailable or glitchy until the server comes back up. 
+            temporarily unavailable or unstable until the server comes back up. 
         </dd>
 <br />
 
@@ -57,7 +57,7 @@ class serverModule extends module {
 <br />
         
     </dl>
-
+    </div>
 
 
 

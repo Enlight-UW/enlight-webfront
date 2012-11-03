@@ -136,6 +136,7 @@ class todoModule extends module {
             <p>Todo is our own private laundry list of maintenance-related things for Enlight. We can put things like "order new bubble tubes" or "whip it out" here. If it\'s a bug with Webfront or the server, it goes on the GitHub issue tracker.</p>
             
             <h3>Add Todo Item</h3>
+            <div class="well">
             <form class="form-horizontal">
                 <div class="control-group">
                     <p class="control-label">Goal</p>
@@ -178,9 +179,11 @@ class todoModule extends module {
 
                 <input type="text" name="todoPriority" value="2" id="todoPriorityText" style="display: none;"/>
             </form>
+            </div>
 
          
             <h3>Current Todo List</h3>
+            <div class="well">
             <a href="#" onclick="refreshTodoList(); return false;" class="btn btn-small"><i class="icon-refresh"></i> Refresh List</a><br /><br />
             
             <!-- This table will be populated via the JS -->
@@ -199,6 +202,7 @@ class todoModule extends module {
                 //We\'ve got that, now refresh it for the first display.
                 refreshTodoList();
             </script>
+            </div>
 ';
     }
 
