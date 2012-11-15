@@ -19,3 +19,27 @@ function getAjaxObject() {
     
     return xml;
 }
+
+
+/**
+ * Because we might have multiple things that react to the window resizing,
+ * handle all of them here.
+ */
+function windowResized() {
+    //Check to see if the pattern editor needs to be resized.
+    if (patternEditorCanvasReady) {
+        updatePatternEditorSize();
+        repaintPatternEditor();
+    }
+}
+
+//We don't want to do intense computation every single instant the user is
+//resizing the window, so do nothing until 300ms after resizing is complete.
+var resizeLock;
+window.onresize = function() {
+    clearTimeout(resizeLock);
+    
+    resizeLock = setTimeout(function() {
+        windowResized();    
+    }, 300);
+};

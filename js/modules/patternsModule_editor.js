@@ -38,6 +38,9 @@ var valveBitmaps;
 //Mouse positions.
 var mouseX, mouseY;
 
+//Is the canvas ready to be modified by things like the resize listener?
+var patternEditorCanvasReady = false;
+
 //------------------------------------------------------------------------------
 //Some constants that probably shouldn't change but can if they have to I guess
 //------------------------------------------------------------------------------
@@ -123,6 +126,8 @@ function initPatternEditorCanvas() {
     
     updatePatternEditorSize();
     repaintPatternEditor();
+    
+    patternEditorCanvasReady = true;
 }
 
 /**
