@@ -35,8 +35,8 @@ function postTodoItem() {
     var goalText = $('#todoGoalText').val();
     var priorityText = $('#todoPriorityText').val();
     
-    //Base 64 them, so that the & character works correctly, since we're POSTing
-    //this string.
+    //Base 64 them, so that the & character works correctly, since we're cating
+    //this string with other parameters separated by &'s
     goalText = $.base64.encode(goalText);
     priorityText = $.base64.encode(priorityText);
     

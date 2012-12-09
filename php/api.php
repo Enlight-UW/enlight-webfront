@@ -22,4 +22,28 @@
  * the Webfront. Don't do a api.php?API_KEY=...
  */
 
+/**
+ * The master function responsible for creating text-based packets to the local
+ * server.
+ * 
+ * @param string $payload What's wrong with a string based protocol anyway?
+ */
+function api_masterSend($payload) {
+    //UDP setup
+    $server_ip = '127.0.0.1';
+    $server_port = 11211;
+
+    $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+    socket_sendto($socket, $payload, strlen($payload), 0, $server_ip, $server_port);
+}
+
+/**
+ * Sends a test message over UDP to the server which should appear on standard
+ * out.
+ * @param string $message String to send.
+ */
+function api_sendTestMessage($message) {
+    api_masterSend($message);
+}
+
 ?>

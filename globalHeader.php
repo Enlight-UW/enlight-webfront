@@ -12,6 +12,7 @@
  * referenced by the project should be added to the list in this file as well.
  */
 
+require "php/api.php";
 require "php/imports.php";
 require "php/auth.php";
 require "php/features.php";
