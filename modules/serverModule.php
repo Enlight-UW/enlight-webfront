@@ -83,7 +83,11 @@ class serverModule extends module {
     </dl>
     </div>
 
-    
+
+    <h3>Server State Information</h3>
+    <p>Information about the server like uptime and # packets receieved.</p>
+
+
     <h3>Manual UDP Test</h3>
     <div class="well">
         <p>
