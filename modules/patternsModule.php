@@ -115,7 +115,7 @@ class patternsModule extends module {
                     vertical mouse position reported by javascript...
                 -->
                 <canvas id="patternEditorCanvas" width="50" height="10"
-                    style="border:1px solid #CFCCCD;width:100%;position:relative;"
+                    style="border:1px solid #CCC;width:100%;position:relative;"
                     onmousemove="patternEditorMouseMove(event)"
                     onclick="patternEditorClick();";>
                 </canvas>
