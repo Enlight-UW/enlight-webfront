@@ -26,6 +26,11 @@
  * 'db'             Database MySQLi object.
  * 'mysql_host'     The hostname of the MySQL server. Usually localhost but can
  *                  change if need be - just modify it below.
+ * 
+ * 'fountainState'  State object representing how things should be presented by
+ *                  the Webfront interface. Updated every x ms by clientside
+ *                  Javascript trigger (Javascript hints PHP to request new
+ *                  state from C++).
  */
 /**
  * Some default variables here that we should set. These probably will only
@@ -45,5 +50,9 @@ if (!isset($_SESSION['modules'])) {
 
     //Default module is the first one.
     $_SESSION['currentModule'] = 0;
+}
+
+if (!isset($_SESSION['fountainState'])) {
+    $_SESSION['fountainState'] = new fountainState();
 }
 ?>

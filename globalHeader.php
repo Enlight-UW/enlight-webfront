@@ -16,8 +16,8 @@ require "php/api.php";
 require "php/imports.php";
 require "php/auth.php";
 require "php/features.php";
+require "php/fountainState.php";
 require "php/session.php";
-
 ?>
 
 <!DOCTYPE html>

@@ -1,0 +1,59 @@
+<?php
+
+/*
+ * Project: enlight-webfront
+ * File: fountainState.php
+ * Author: Alex Kersten
+ * 
+ * Object that handles state-tracking of the fountain. Created for each user and
+ * will represent what that user sees as far as the Webfront is concerned.
+ * 
+ * Upon creation of this object and upon any request from the client, this
+ * object's state is updated by opening a UDP receiving socket and requesting
+ * the fountain server to send its state information over that connection.
+ * 
+ * But Alex, what happens if two+ sessions request an update at the same time?
+ * Well... We just fail to bind the socket in this situation - but that's okay,
+ * because due to the inevitable variance in the clientside timing of update
+ * requests and network latency, the client will almost surely get updated the
+ * next time it requests an update, considering the actual updates themselves
+ * take < 1ms (localhost communication here between C++ and PHP) and hitting the
+ * unfortunate overlap window multiple times is statistically impossible for
+ * small numbers of clients. 
+ * 
+ * Obviously, this would be really bad practice if there were ever going to be
+ * many people using the Webfront at once - you'd want to use a proper transport
+ * layer between the C++ server and the Webfront, but for our small scale this
+ * is excellent. I'd estimate it starts to choke around 500-1000 simultaneous
+ * users, but considering that our scale is about 1 or 2 concurrent users we're
+ * perfectly safe.
+ */
+
+class fountainState {
+
+    function __construct() {
+        requestStateUpdate();
+    }
+
+    function requestStateUpdate() {
+        $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+
+
+        if (socket_bind($socket, '127.0.0.1', 11911) == FALSE) {
+            //Someone else is already listening. Guess we get to try again later
+            return;
+        }
+
+        //If we're bound, we can tell the server to send information now, and
+        //we'll read it from the "hardware" buffer (probably)
+ 
+        $from = '';
+        $port = 0;
+        socket_recvfrom($socket, $buf, 12, 0, $from, $port);
+
+        socket_close($socket);
+    }
+
+}
+
+?>
