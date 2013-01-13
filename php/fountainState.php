@@ -31,10 +31,6 @@
 
 class fountainState {
 
-    function __construct() {
-        requestStateUpdate();
-    }
-
     function requestStateUpdate() {
         $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 
@@ -46,12 +42,16 @@ class fountainState {
 
         //If we're bound, we can tell the server to send information now, and
         //we'll read it from the "hardware" buffer (probably)
- 
+
         $from = '';
         $port = 0;
         socket_recvfrom($socket, $buf, 12, 0, $from, $port);
 
         socket_close($socket);
+    }
+
+    function __construct() {
+
     }
 
 }
