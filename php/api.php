@@ -53,7 +53,8 @@ function api_masterSend($opcode, $payload) {
  * @param string $message String to send.
  */
 function api_sendTestMessage($message) {
-    api_masterSend($message);
+    //STDEcho opcode is 0x4
+    api_masterSend(0x4, $message);
 }
 
 ?>
