@@ -19,9 +19,6 @@ function api_masterSend($payload) {
     socket_sendto($socket, $payload, strlen($payload), 0, $server_ip, $server_port);
 }
 
-
-
-
 echo "Binding to socket 11911...<br />";
 
 
@@ -40,9 +37,9 @@ sleep(3);
 
 
 //Send a test packet with the dummy SMK and echo request.
-$testPacket = pack("N*", 
+$testPacket = pack("AN",
         "AF1993ADFE944E38FE8CED6E490D1BB16C6A20F7F36237753A2EAF5BF2503536",
-        0x00000002, "Test of echo capabilities!");
+        2) . "Test of echo capabilities!";
 api_masterSend($testPacket);
 
 

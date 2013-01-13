@@ -26,15 +26,25 @@
  * The master function responsible for creating text-based packets to the local
  * server.
  * 
+ * @param int $opcode Opcode for this request. 4-byte unsigned integer.
  * @param string $payload What's wrong with a string based protocol anyway?
  */
-function api_masterSend($payload) {
+function api_masterSend($opcode, $payload) {
     //UDP setup
     $server_ip = '127.0.0.1';
     $server_port = 11211;
 
+    //The second argument here is the SMK, change it from the default (AF199...)
+    //before deploying!
+    //Don't include $payload in this pack - presumably it's been packed before
+    //from whatever called this function and will be formatted accordingly -
+    //just cat it to the end of the resulting data string.
+    $data = pack("AN",
+            "AF1993ADFE944E38FE8CED6E490D1BB16C6A20F7F36237753A2EAF5BF2503536",
+            $opcode) . $payload;
+
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-    socket_sendto($socket, $payload, strlen($payload), 0, $server_ip, $server_port);
+    socket_sendto($socket, $data, strlen($data), 0, $server_ip, $server_port);
 }
 
 /**
