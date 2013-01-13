@@ -37,9 +37,9 @@ sleep(3);
 
 
 //Send a test packet with the dummy SMK and echo request.
-$testPacket = pack("AN",
-        "AF1993ADFE944E38FE8CED6E490D1BB16C6A20F7F36237753A2EAF5BF2503536",
-        2) . "Test of echo capabilities!";
+$testPacket = "AF1993ADFE944E38FE8CED6E490D1BB16C6A20F7F36237753A2EAF5BF2503536"
+    .pack("N",0x2) . "Test of echo capabilities!";
+
 api_masterSend($testPacket);
 
 

@@ -39,9 +39,8 @@ function api_masterSend($opcode, $payload) {
     //Don't include $payload in this pack - presumably it's been packed before
     //from whatever called this function and will be formatted accordingly -
     //just cat it to the end of the resulting data string.
-    $data = pack("AN",
-            "AF1993ADFE944E38FE8CED6E490D1BB16C6A20F7F36237753A2EAF5BF2503536",
-            $opcode) . $payload;
+    $data = "AF1993ADFE944E38FE8CED6E490D1BB16C6A20F7F36237753A2EAF5BF2503536" .
+            pack("N", $opcode) . $payload;
 
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     socket_sendto($socket, $data, strlen($data), 0, $server_ip, $server_port);
