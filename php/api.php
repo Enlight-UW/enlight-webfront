@@ -44,6 +44,7 @@ function api_masterSend($opcode, $payload) {
 
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     socket_sendto($socket, $data, strlen($data), 0, $server_ip, $server_port);
+    socket_close($socket);
 }
 
 /**
