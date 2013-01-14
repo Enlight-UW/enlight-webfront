@@ -7,7 +7,10 @@
  * 
  * Hardware buffer test to see if we can create and bind to a socket, send
  * something to it, and then call recvfrom to get the message we received (in
- * that order).
+ * that order). We purposefully wait 3 seconds after sending a request to make
+ * sure the data coming to us is read after-the-fact and was indeed buffered 
+ * somehow by the underlying network stack (which we need for this project, as
+ * "listening first" is not an option with this kind of PHP approach).
  */
 
 function api_masterSend($payload) {
