@@ -20,6 +20,12 @@
  * 
  * Considerations: Please use the functions here when accessing this file from
  * the Webfront. Don't do a api.php?API_KEY=...
+ *
+ * This file will also contain functionality to get a state from the server and
+ * present it to the webfront.
+ * 
+ * Please add all new API functionality to api-actions.php.
+ * 
  */
 
 /**
@@ -47,14 +53,7 @@ function api_masterSend($opcode, $payload) {
     socket_close($socket);
 }
 
-/**
- * Sends a test message over UDP to the server which should appear on standard
- * out.
- * @param string $message String to send.
- */
-function api_sendTestMessage($message) {
-    //STDEcho opcode is 0x4
-    api_masterSend(0x4, $message);
-}
+
+require "api-actions.php";
 
 ?>
