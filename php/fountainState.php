@@ -33,7 +33,7 @@ class fountainState {
 
     private $latestState = array();
 
-    function requestStateUpdate() {
+    function doStateUpdate() {
         $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 
 
@@ -45,10 +45,7 @@ class fountainState {
         //If we're bound, we can tell the server to send information now, and
         //we'll read it from the "hardware" buffer (probably).
         //Form and send the state update request packet
-        $testPacket = "AF1993ADFE944E38FE8CED6E490D1BB16C6A20F7F36237753A2EAF5BF2503536"
-                . pack("N", 0x3);
-
-        api_masterSend($testPacket);
+        api_masterSend(3, "");
 
 
         //Receive state update datagram
@@ -71,12 +68,17 @@ class fountainState {
             //value part...
             $isolator = explode(">", $pair);
 
+            if (count($isolator) != 2) {
+                //End of array or malformed keypair
+                continue;
+            }
+
             //isolator[0] contains "<Name" and isolator[1] has the value. Cut
             //the < off of the first bit and add it to our associative array.
             $key = substr($isolator[0], 1);
             $value = $isolator[1];
 
-            $latestState[$key] = $value;
+            $this->latestState[$key] = $value;
         }
     }
 
@@ -85,8 +87,18 @@ class fountainState {
      * 
      * @param $key Name of the state to get 
      */
-    function getState($key) {
+    function getStateFromKey($key) {
         return $this->latestState[$key];
+    }
+
+    function getState() {
+        $rtn = "";
+
+        foreach ($this->latestState as $key => $value) {
+            $rtn .= "<" . $key . ">" . $value . "</>";
+        }
+
+        return $rtn;
     }
 
     function __construct() {

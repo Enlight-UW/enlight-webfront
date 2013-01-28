@@ -43,3 +43,31 @@ window.onresize = function() {
         windowResized();    
     }, 300);
 };
+
+
+//New state callback - this gets executed whenever we receive an updated state
+//datagram from the server; this is responsible for updating the DOM with new
+//information. The way it works is, if you require updated information, ID your
+//element as FIELD_anyName - this is how we'll ID elements and update them
+//to their correct value.
+
+
+$(document).ready(function() {
+    var ajaxStateUpdater = function (){
+        //Request update from the server
+        $.ajax(
+        {
+            type: "POST",
+            url:"php/ajax.php",
+            data: {
+                updateState: "true"
+            }
+        }).done(function(msg) {
+            alert(msg);
+        });
+        
+        setTimeout(ajaxStateUpdater, 1000);
+    };
+    
+    setTimeout(ajaxStateUpdater, 1000);
+});
