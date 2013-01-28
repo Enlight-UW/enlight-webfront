@@ -32,7 +32,7 @@
 class fountainState {
 
     private $latestState = array();
-    
+
     function requestStateUpdate() {
         $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 
@@ -50,31 +50,28 @@ class fountainState {
         socket_recvfrom($socket, $buf, 1024, 0, $from, $port);
 
         socket_close($socket);
-        
-        
+
+
         //This buffer is one big string filled with <Name>Value</> "XML" text.
         //We need to parse each one of these out into an associative array so
         //that they can be easily accessed by the rest of the code.
-        
         //First, separate all the key-value pairs.
         $pairs = explode("</>", $buf);
-        
+
         foreach ($pairs as $pair) {
             //This looks like <Name>Value, so isolate the name part and the
             //value part...
             $isolator = explode(">", $pair);
-            
+
             //isolator[0] contains "<Name" and isolator[1] has the value. Cut
             //the < off of the first bit and add it to our associative array.
             $key = substr($isolator[0], 1);
             $value = $isolator[1];
-            
+
             $latestState[$key] = $value;
         }
-        
-        
     }
-    
+
     /**
      * Returns the state of a variable as far as the Webfront is concerned.
      * 
@@ -87,8 +84,6 @@ class fountainState {
     function __construct() {
         
     }
-    
-    
 
 }
 
