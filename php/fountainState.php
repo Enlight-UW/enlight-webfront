@@ -43,7 +43,15 @@ class fountainState {
         }
 
         //If we're bound, we can tell the server to send information now, and
-        //we'll read it from the "hardware" buffer (probably)
+        //we'll read it from the "hardware" buffer (probably).
+        //Form and send the state update request packet
+        $testPacket = "AF1993ADFE944E38FE8CED6E490D1BB16C6A20F7F36237753A2EAF5BF2503536"
+                . pack("N", 0x3);
+
+        api_masterSend($testPacket);
+
+
+        //Receive state update datagram
 
         $from = '';
         $port = 0;
