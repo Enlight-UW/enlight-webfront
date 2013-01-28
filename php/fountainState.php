@@ -31,7 +31,7 @@
 
 class fountainState {
 
-    $latestState = array();
+    private $latestState = array();
     
     function requestStateUpdate() {
         $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
@@ -59,7 +59,7 @@ class fountainState {
         //First, separate all the key-value pairs.
         $pairs = explode("</>", $buf);
         
-        for ($pairs as $pair) {
+        foreach ($pairs as $pair) {
             //This looks like <Name>Value, so isolate the name part and the
             //value part...
             $isolator = explode(">", $pair);
@@ -81,7 +81,7 @@ class fountainState {
      * @param $key Name of the state to get 
      */
     function getState($key) {
-        return $latestState[$key];
+        return $this->latestState[$key];
     }
 
     function __construct() {
