@@ -24,7 +24,7 @@ if (isset($_POST['ajax_get_todoList'])) {
     if (!isset($_SESSION['AUTHORIZED'])) {
         die("Not authorized.");
     }
-
+    
 
     $state = $_SESSION['db']->
             prepare("SELECT * FROM `todo` ORDER BY `resolver` ASC, `priority` DESC, `time` DESC");
