@@ -52,6 +52,7 @@ class fountainState {
 
         $from = '';
         $port = 0;
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>1, 'usec'=>0));
         socket_recvfrom($socket, $buf, 1024, 0, $from, $port);
 
         socket_close($socket);
