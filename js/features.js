@@ -69,9 +69,9 @@ $(document).ready(function() {
                 window.location = 'error.php?id=' + msg.substring(6);
             }
             //alert(msg);
-        });
-        
-        setTimeout(ajaxStateUpdater, 1000);
+            
+            setTimeout(ajaxStateUpdater, 1000);
+        });   
     };
     
     setTimeout(ajaxStateUpdater, 1000);
