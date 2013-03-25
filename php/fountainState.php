@@ -114,14 +114,14 @@ class fountainState {
      * Convert the state array into JSON and send it to the client.
      */
     function getState() {
-
-
         $rtn = "{";
 
         foreach ($this->latestState as $key => $value) {
             //Exception for true/false values - if we see these, we'll assume
             //to interpret it as the bare type rather than the string.
-            if ($value === "true" || $value === "false") {
+            //We'll also want the raw type for purely numeric values, so parse
+            //that out too.
+            if ($value === "true" || $value === "false" || is_numeric($value)) {
                 $rtn .= "\"" . $key . "\":" . $value . ",";
             } else {
                 $rtn .= "\"" . $key . "\":\"" . $value . "\",";
