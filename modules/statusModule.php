@@ -44,9 +44,6 @@ class statusModule extends module {
                     <span class="label label-warning">Manhole Cover</span><br />
                     <span class="label label-important">Spillway Water Level</span><br />
                 </dd>
-                <dt>Test example:</dt>
-                <dd data-bind="text: testvalue">
-                </dd>
             </dl>
           </div>
 ';

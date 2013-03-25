@@ -55,7 +55,7 @@ class fountainState {
         $from = '';
         $port = 0;
         socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => 1, 'usec' => 0));
-        
+
         /*
          * Note the error suppression here - we don't want the garbage markup
          * PHP generates on a failure to be echoed out here because we
@@ -97,7 +97,7 @@ class fountainState {
 
             $this->latestState[$key] = $value;
         }
-        
+
         return true;
     }
 
@@ -110,22 +110,27 @@ class fountainState {
         return $this->latestState[$key];
     }
 
-
     /**
      * Convert the state array into JSON and send it to the client.
      */
     function getState() {
-        
-        
+
+
         $rtn = "{";
 
         foreach ($this->latestState as $key => $value) {
-            $rtn .= "\"" . $key . "\":\"" . $value . "\",";
+            //Exception for true/false values - if we see these, we'll assume
+            //to interpret it as the bare type rather than the string.
+            if ($value === "true" || $value === "false") {
+                $rtn .= "\"" . $key . "\":" . $value . ",";
+            } else {
+                $rtn .= "\"" . $key . "\":\"" . $value . "\",";
+            }
         }
 
         //Remove trailing comma
         $rtn = substr($rtn, 0, strlen($rtn) - 1);
-        
+
         $rtn .= "}";
         return $rtn;
     }

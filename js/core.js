@@ -51,15 +51,9 @@ window.onresize = function() {
 };
 
 
-//This is the Knockout viewmodel that all dynamic elements of the page will
-//reference - this gets updated by the KO Mapping plugin - we'll just define
-//the default values here.
-var defaultData = {
-    error: false,
-    errormessage: "No error",
-    testvalue: "NO MESSAGES YET"
-}
 
+//The defaultData variable can be found in viewModel.js, which is included
+//before this script.
 var viewModel = ko.mapping.fromJS(defaultData);
 
 //New state callback - this gets executed whenever we receive an updated state
