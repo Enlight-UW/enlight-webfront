@@ -56,7 +56,8 @@ window.onresize = function() {
 //the default values here.
 var defaultData = {
     error: false,
-    errormessage: "No error"
+    errormessage: "No error",
+    testvalue: "NO MESSAGES YET"
 }
 
 var viewModel = ko.mapping.fromJS(defaultData);

@@ -31,6 +31,8 @@
 
 class fountainState {
 
+    //This array represents the entire current state - it is updated from the
+    //native server and then sent out to the client.
     private $latestState = array();
 
     function doStateUpdate() {
@@ -108,13 +110,23 @@ class fountainState {
         return $this->latestState[$key];
     }
 
+
+    /**
+     * Convert the state array into JSON and send it to the client.
+     */
     function getState() {
-        $rtn = "";
+        
+        
+        $rtn = "{";
 
         foreach ($this->latestState as $key => $value) {
-            $rtn .= "<" . $key . ">" . $value . "</>";
+            $rtn .= "\"" . $key . "\":\"" . $value . "\",";
         }
 
+        //Remove trailing comma
+        $rtn = substr($rtn, 0, strlen($rtn) - 1);
+        
+        $rtn .= "}";
         return $rtn;
     }
 
