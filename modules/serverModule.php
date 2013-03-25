@@ -10,24 +10,23 @@
  */
 
 if (isset($_POST['ajax_testUDPMessage']) || isset($_GET['ajax_testUDPMessage'])) {
-    //Even though we don't use the database in this callback, include this file
-    //because it allows for the session to be resumed.
-    require "../php/startDatabase.php";
-    
-    
+    if (!isset($_SESSION)) {
+        session_start();
+    }
+
 
     if (!isset($_SESSION['AUTHORIZED'])) {
         die("Not authorized.");
     }
-    
+
     echo 'WORKING?';
 
     require "../php/api.php"; //Include API functions in this scope.
     api_sendTestMessage(base64_decode($_POST['ajax_testUDPMessage']));
 
-    
+
     echo 'WORKING';
-    
+
     exit(0);
 }
 
