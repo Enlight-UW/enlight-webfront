@@ -52,8 +52,23 @@ class fountainState {
 
         $from = '';
         $port = 0;
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>1, 'usec'=>0));
-        socket_recvfrom($socket, $buf, 1024, 0, $from, $port);
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => 1, 'usec' => 0));
+        
+        /*
+         * Note the error suppression here - we don't want the garbage markup
+         * PHP generates on a failure to be echoed out here because we
+         * _already know_ there has been an error if we enter the error
+         * handling routine, and anything piped out to echo here will become
+         * part of the markup being sent back in the AJAX request to indicate
+         * to the client that there has been an error - so only send the
+         * error token with a message to display to the client.
+         */
+        if (!@socket_recvfrom($socket, $buf, 1024, 0, $from, $port)) {
+            //Timed out
+            echo "error:Local server response timeout";
+            @socket_close($socket);
+            return false;
+        }
 
         socket_close($socket);
 
@@ -81,6 +96,8 @@ class fountainState {
 
             $this->latestState[$key] = $value;
         }
+        
+        return true;
     }
 
     /**

@@ -54,6 +54,7 @@ window.onresize = function() {
 
 $(document).ready(function() {
     var ajaxStateUpdater = function (){
+        $('#ajaxer').css('display', 'inline');
         //Request update from the server
         $.ajax(
         {
@@ -63,7 +64,11 @@ $(document).ready(function() {
                 updateState: "true"
             }
         }).done(function(msg) {
-            alert(msg);
+            $('#ajaxer').css('display', 'none');
+            if (msg.substring(0, 6) == "error:") {
+                window.location = 'error.php?id=' + msg.substring(6);
+            }
+            //alert(msg);
         });
         
         setTimeout(ajaxStateUpdater, 1000);

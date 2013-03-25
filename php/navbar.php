@@ -36,7 +36,12 @@ corresponding module -->
 <!-- Beginning of navbar with maquina title. -->
 <div class="navbar navbar-inverse">
     <div class="navbar-inner">
+
+        <!-- Branding -->
         <a class="brand" href="webfront.php">M&aacute;quina Webfront</a>
+
+
+        <!-- Button for each module -->
         <ul class="nav" id="mainNavbar">
             <?php
             //For every module in the session modules array, we'll echo it out
@@ -58,6 +63,17 @@ corresponding module -->
             }
             ?>
         </ul>
+
+
+        <!-- AJAX notifier -->
+        <ul class="nav" id="ajaxer">
+            <li>
+                <a href="#" onclick="return false;"><span id="ajaxerLabel" class="label label-inverse"><i class="icon-refresh icon-white"></i> Updating...</span></a>
+            </li>
+        </ul>
+
+
+
         <ul class="nav pull-right">
             <li>
                 <a href="logout.php"><strong>Log out</strong></a>        

@@ -18,14 +18,15 @@
 if (isset($_POST['updateState'])) {
     require "fountainState.php";
     require "api.php";
-    
+
     require "startDatabase.php";
 
     if (!isset($_SESSION['AUTHORIZED'])) {
         die("Not authorized.");
     }
 
-    $_SESSION['fountainState']->doStateUpdate();
-    echo $_SESSION['fountainState']->getState();
+    if ($_SESSION['fountainState']->doStateUpdate()) {
+        echo $_SESSION['fountainState']->getState();
+    }
 }
 ?>

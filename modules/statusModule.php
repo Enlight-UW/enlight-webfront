@@ -18,7 +18,7 @@ class statusModule extends module {
 
     function getInnerContent() {
         return
-                '<h2>World Overview</h2>
+                '<h2>Welcome To Our World!</h2>
                     <p>This is the status page, where all relevant live statistics
            of the fountain and related software will be represented. These
            statistics are refreshed in real-time as the server finds out about

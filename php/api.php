@@ -49,12 +49,10 @@ function api_masterSend($opcode, $payload) {
             pack("N", $opcode) . $payload;
 
     $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-    socket_set_option($socket, SOL_SOCKET, SO_SNDTIMEO, array('sec'=>1, 'usec'=>0));
+    socket_set_option($socket, SOL_SOCKET, SO_SNDTIMEO, array('sec' => 1, 'usec' => 0));
     socket_sendto($socket, $data, strlen($data), 0, $server_ip, $server_port);
     socket_close($socket);
 }
 
-
 require "api-actions.php";
-
 ?>
