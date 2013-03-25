@@ -38,4 +38,4 @@ require "php/session.php";
         <script src="js/notInventedHere/knockout-2.2.1.js"></script>
         <script src="js/notInventedHere/knockout.mapping-latest.js"></script>
 
-        <script src="js/features.js"></script>
+        <script src="js/core.js"></script>

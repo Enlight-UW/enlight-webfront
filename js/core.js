@@ -1,9 +1,15 @@
 /* 
  * Project: enlight-webfront
- * File: features.js
+ * File: core.js
  * Author: Alex Kersten
  * 
- * Some general site-wide features that we'll use over and over again.
+ * This file encapsulates the core Javascript functionalities of the Webfront.
+ * Global handlers (window resize, ajax updating) are handled here, as well
+ * as the knockout viewmodel which keeps all of the dynamic elements up to date.
+ * 
+ * The Webfront using the KO Mapping plugin to dynamically update local JS (and
+ * consequently, DOM) data from the JSON returned by the server on update
+ * responses.
  */
 
 
@@ -48,7 +54,12 @@ window.onresize = function() {
 //This is the Knockout viewmodel that all dynamic elements of the page will
 //reference - this gets updated by the KO Mapping plugin - we'll just define
 //the default values here.
-var viewModel = ko.mapping.fromJSON('{"error":false,"errormessage":"No error"}');
+var defaultData = {
+    error: false,
+    errormessage: "No error"
+}
+
+var viewModel = ko.mapping.fromJS(defaultData);
 
 //New state callback - this gets executed whenever we receive an updated state
 //datagram from the server; this is responsible for updating the DOM with new
@@ -67,10 +78,12 @@ $(document).ready(function() {
         }).done(function(msg) {
             var obj = $.parseJSON(msg);
 
+            //Check if we need to redirect to an error page.
             if (obj.error) {
                 window.location = 'error.php?id=' + obj.errormessage;
             }
             
+            //Hide the worker indicator
             $('#ajaxer').css('display', 'none');
             
             //Update our viewmodel with the new JSON object
@@ -81,4 +94,6 @@ $(document).ready(function() {
     };
     
     setTimeout(ajaxStateUpdater, 1000);
+    
+    ko.applyBindings(viewModel);
 });
