@@ -65,7 +65,6 @@ class fountainState {
          */
         if (!@socket_recvfrom($socket, $buf, 1024, 0, $from, $port)) {
             //Timed out
-            echo "error:Local server response timeout";
             @socket_close($socket);
             return false;
         }

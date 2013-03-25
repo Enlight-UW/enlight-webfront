@@ -45,13 +45,14 @@ window.onresize = function() {
 };
 
 
+//This is the Knockout viewmodel that all dynamic elements of the page will
+//reference - this gets updated by the KO Mapping plugin - we'll just define
+//the default values here.
+var viewModel = ko.mapping.fromJSON('{"error":false,"errormessage":"No error"}');
+
 //New state callback - this gets executed whenever we receive an updated state
 //datagram from the server; this is responsible for updating the DOM with new
-//information. The way it works is, if you require updated information, ID your
-//element as FIELD_anyName - this is how we'll ID elements and update them
-//to their correct value.
-
-
+//information by updatnig the knockout viewmodel.
 $(document).ready(function() {
     var ajaxStateUpdater = function (){
         $('#ajaxer').css('display', 'inline');
@@ -64,11 +65,16 @@ $(document).ready(function() {
                 updateState: "true"
             }
         }).done(function(msg) {
-            $('#ajaxer').css('display', 'none');
-            if (msg.substring(0, 6) == "error:") {
-                window.location = 'error.php?id=' + msg.substring(6);
+            var obj = $.parseJSON(msg);
+
+            if (obj.error) {
+                window.location = 'error.php?id=' + obj.errormessage;
             }
-            //alert(msg);
+            
+            $('#ajaxer').css('display', 'none');
+            
+            //Update our viewmodel with the new JSON object
+            ko.mapping.fromJS(obj, viewModel);
             
             setTimeout(ajaxStateUpdater, 1000);
         });   

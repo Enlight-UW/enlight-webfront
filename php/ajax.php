@@ -15,11 +15,16 @@
  * fountain.
  */
 
+/**
+ * Returns the state of the fountain to the client in a JSON object.
+ */
 if (isset($_POST['updateState'])) {
     require "fountainState.php";
     require "api.php";
 
-    require "startDatabase.php";
+    if (!isset($_SESSION)) {
+        session_start();
+    }
 
     if (!isset($_SESSION['AUTHORIZED'])) {
         die("Not authorized.");
@@ -27,6 +32,8 @@ if (isset($_POST['updateState'])) {
 
     if ($_SESSION['fountainState']->doStateUpdate()) {
         echo $_SESSION['fountainState']->getState();
+    } else {
+        echo "{\"error\":true,\"errormessage\":\"The native server is not running.\"}";
     }
 }
 ?>

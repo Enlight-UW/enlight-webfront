@@ -32,6 +32,10 @@ require "php/session.php";
     <body>
         <script src="js/notInventedHere/jquery-1.8.2.min.js"></script>
         <script src="js/notInventedHere/jquery.base64.min.js"></script>
+        
         <script src="js/notInventedHere/bootstrap.min.js"></script>
+        
+        <script src="js/notInventedHere/knockout-2.2.1.js"></script>
+        <script src="js/notInventedHere/knockout.mapping-latest.js"></script>
 
         <script src="js/features.js"></script>
