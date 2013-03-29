@@ -70,6 +70,7 @@ class statusModule extends module {
                     <span class="label" style="position: absolute; left: 130px; top: 155px;" data-bind="css: {\'label-info\': valveState() & 8388608}">HR</span>
                     
                     </div>
+                    <span class="label">Idle</span> <span class="label label-info">Active</span> <span class="label label-warning">Disabled</span>
                 </dd>
                 
 
