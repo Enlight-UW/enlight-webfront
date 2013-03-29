@@ -12,7 +12,7 @@
 class adminModule extends module {
 
     function __construct() {
-        parent::__construct("Admin");
+        parent::__construct("<i class=\"icon-wrench\"></i> Admin");
     }
 
     function getInnerContent() {

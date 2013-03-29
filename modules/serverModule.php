@@ -33,7 +33,7 @@ if (isset($_POST['ajax_testUDPMessage']) || isset($_GET['ajax_testUDPMessage']))
 class serverModule extends module {
 
     function __construct() {
-        parent::__construct("Server");
+        parent::__construct("<i class=\"icon-hdd\"></i> Server");
     }
 
     function getInnerContent() {

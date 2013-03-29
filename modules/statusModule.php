@@ -13,7 +13,7 @@
 class statusModule extends module {
 
     function __construct() {
-        parent::__construct("Status");
+        parent::__construct("<i class=\"icon-globe\"></i> Status");
     }
 
     function getInnerContent() {

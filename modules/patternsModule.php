@@ -11,7 +11,7 @@
 class patternsModule extends module {
 
     function __construct() {
-        parent::__construct("Patterns");
+        parent::__construct("<i class=\"icon-random\"></i> Patterns");
     }
 
     function getInnerContent() {
