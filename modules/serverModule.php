@@ -49,7 +49,8 @@ class serverModule extends module {
         </dt>
         <dd>
             Toggle the server between Idle and Patterns (or current override). Useful for maintenance or to gently stop the fountain if wetness is momentarily unappreciated.
-            Check on the Status page to see the current state of the fountain.
+            Check on the Status page to see the current state of the fountain. Keep in mind that, if the native server were to fail (even in a forced idle state), the cRIO may or may not
+            default to its built-in pattern after a certain timeout period.
         </dd>
 <br />
 

@@ -4,7 +4,7 @@
  * Project: CleanWebfront
  * File: statusModule.php
  * Author: Alex Kersten
- * 
+ *
  * The status module is the default module that users will see on the main page
  * of the Webfront. It will contain sensor information and jet activity
  * indicators and server status indicators.
@@ -16,6 +16,12 @@ class statusModule extends module {
         parent::__construct("<i class=\"icon-globe\"></i> Status");
     }
 
+    
+    //TODO: This is a pretty bad anti-pattern - have PHP read this HTML from a
+    //template file eventually instead of cramming it into one big string
+    //in the return function. Do this for all modules, and maybe even have it
+    //default to reading from a template in the parent class so we don't even
+    //have to modify getInnerContent.
     function getInnerContent() {
         return
                 '<h2>Welcome To Our World!</h2>
@@ -27,7 +33,7 @@ class statusModule extends module {
            things couldn\'t seem fine here yet still be broken, though.</p>
            <div class="well">
             <dl class="dl-horizontal">
-            
+
 
                 <dt>Server State</dt>
                 <dd>
@@ -68,13 +74,175 @@ class statusModule extends module {
 
                     <span class="label" style="position: absolute; left: 130px; top: 138px;" data-bind="css: {\'label-info\': valveState() & 4194304}">HC</span>
                     <span class="label" style="position: absolute; left: 130px; top: 155px;" data-bind="css: {\'label-info\': valveState() & 8388608}">HR</span>
-                    
+
                     </div>
                     <span class="label">Idle</span> <span class="label label-info">Active</span> <span class="label label-warning">Disabled</span>
                 </dd>
-                
+
 
             </dl>
+          </div>
+
+
+          <!-- LMOC -->
+          <h3>Manual Override <span class="muted">(LMOC 2.0)</span></h3>
+          <div class="well">
+                <p>
+                    This is a high-priority manual control for the valves.
+                    Enabling this will immediately invalidate outstanding API
+                    authorizations and the server will not grant new API access
+                    until manual intervention is disabled.
+                </p>
+                <p style="text-align:center;">
+                    <a href="#" onclick="return false;" class="btn btn-warning">
+                        Enable Override
+                    </a>
+                </p>
+                
+            <!-- TODO: Insert buttons dependant on override state here -->
+          </div>
+          
+
+          <!-- Restricted valves -->
+          <h3>Valve Restrictions</h3>
+          <div class="well">
+                <p>
+                    Sometimes valves misbehave and need to be disabeld. If a
+                    valve is disabled here (indicated on the above status
+                    diagram), it will not be able to be actuated by the server
+                    in any manner (not even manual override). Click a valve name
+                    to toggle it between enabled and disabled.
+                </p>
+                <table class="table">
+                    <tr>
+                        <th>Vertical</th>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                V1
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                V2
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                V3
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                V4
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                V5
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                V6
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                V7
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                V8
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                V9
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                V10
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                VC
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                VR
+                            </a>
+                        </td>
+                    </tr>
+                    
+
+                    <tr>
+                        <th>Horizontal</th>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                H1
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                H2
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                H3
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                H4
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                H5
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                H6
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                H7
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                H8
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                H9
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                H10
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                HC
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" onclick="return false;" class="btn">
+                                HR
+                            </a>
+                        </td>
+                    </tr>
+                </table>
           </div>
 ';
     }
