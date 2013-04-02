@@ -28,7 +28,7 @@ if (isset($_POST['ajax_testUDPMessage']) || isset($_GET['ajax_testUDPMessage']))
     echo 'WORKING';
 
     exit(0);
-}
+} 
 
 class serverModule extends module {
 
