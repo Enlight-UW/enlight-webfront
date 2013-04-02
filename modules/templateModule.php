@@ -9,11 +9,7 @@
 class templateModule extends module {
 
     function __construct() {
-        parent::__construct("Title of the module goes here.");
-    }
-
-    function getInnerContent() {
-        return '<h2>Attention grabber</h2>';
+        parent::__construct("Title of the module goes here.", "Filename of the template goes here");
     }
 
 }

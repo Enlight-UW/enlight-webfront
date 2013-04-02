@@ -18,9 +18,11 @@
 class module {
 
     private $moduleName;
+    private $templateFileName;
 
-    function __construct($moduleName) {
+    function __construct($moduleName, $templateFileName) {
         $this->moduleName = $moduleName;
+        $this->templateFileName = $templateFileName;
     }
 
     /**
@@ -44,12 +46,12 @@ class module {
     }
 
     /**
-     * Return the inner HTML inside the full view of this module. This is the
-     * only function you should override when making a new module. 
+     * Reads the markup from a template in ../tpl
+     * 
+     * @return string HTML markup of this module.
      */
-    protected function getInnerContent() {
-        return "Default inner conent for master module object, " .
-                "shouldn't see this...";
+    public final function getInnerContent() {
+        return file_get_contents("tpl/modules/" . $this->templateFileName . ".tpl");
     }
     
     /**

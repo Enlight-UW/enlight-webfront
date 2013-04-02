@@ -12,14 +12,14 @@
 class adminModule extends module {
 
     function __construct() {
-        parent::__construct("<i class=\"icon-wrench\"></i> Admin");
+        parent::__construct("<i class=\"icon-wrench\"></i> Admin", "adminModule");
     }
 
-    function getInnerContent() {
+   /* function getInnerContent() {
         return '<h2>Policy Details</h2>
             <p>Manage API access and do other administrative things.</p>
             <h3>API Keys</h3>';
-    }
+    }*/
 
 }
 

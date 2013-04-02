@@ -13,7 +13,7 @@
 class statusModule extends module {
 
     function __construct() {
-        parent::__construct("<i class=\"icon-globe\"></i> Status");
+        parent::__construct("<i class=\"icon-globe\"></i> Status", "statusModule");
     }
 
     
@@ -22,7 +22,7 @@ class statusModule extends module {
     //in the return function. Do this for all modules, and maybe even have it
     //default to reading from a template in the parent class so we don't even
     //have to modify getInnerContent.
-    function getInnerContent() {
+  /*  function getInnerContent() {
         return
                 '<h2>Welcome To Our World!</h2>
                     <p>This is the status page, where all relevant live statistics
@@ -245,7 +245,7 @@ class statusModule extends module {
                 </table>
           </div>
 ';
-    }
+    }*/
 
 }
 

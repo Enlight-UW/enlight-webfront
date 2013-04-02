@@ -11,10 +11,10 @@
 class patternsModule extends module {
 
     function __construct() {
-        parent::__construct("<i class=\"icon-random\"></i> Patterns");
+        parent::__construct("<i class=\"icon-random\"></i> Patterns", "patternsModule");
     }
 
-    function getInnerContent() {
+  /*  function getInnerContent() {
         return '
             <script src="js/modules/patternsModule.js"></script>
             <script src="js/modules/patternsModule_editor.js"></script>
@@ -117,13 +117,13 @@ class patternsModule extends module {
                 <canvas id="patternEditorCanvas" width="50" height="10"
                     style="border:1px solid #CCC;width:100%;position:relative;"
                     onmousemove="patternEditorMouseMove(event)"
-                    onclick="patternEditorClick();";>
+                    onclick="patternEditorClick();">
                 </canvas>
                 
 
             </div>
         ';
-    }
+    }*/
 
 }
 

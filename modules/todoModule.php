@@ -125,10 +125,10 @@ if (isset($_POST['ajax_resolve_todoItem'])) {
 class todoModule extends module {
 
     function __construct() {
-        parent::__construct("<i class=\"icon-list\"></i> Goals");
+        parent::__construct("<i class=\"icon-list\"></i> Goals", "todoModule");
     }
 
-    function getInnerContent() {
+   /* function getInnerContent() {
         return '
             <script src="js/modules/todoModule.js"></script>
 
@@ -204,7 +204,7 @@ class todoModule extends module {
             </script>
             </div>
 ';
-    }
+    }*/
 
 }
 
