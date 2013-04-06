@@ -21,7 +21,7 @@ function refreshTodoList() {
             //Replace it.
             document.getElementById('todoList').innerHTML=xml.responseText; 
        }
-    }
+    };
                 
     xml.open("POST", "modules/todoModule.php", true);
     xml.setRequestHeader("Content-type","application/x-www-form-urlencoded");
