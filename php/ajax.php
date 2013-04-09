@@ -15,6 +15,9 @@
  * fountain.
  */
 
+//CHANGE THIS BEFORE PRODUCTION (C5CDB...)
+$WEBFRONT_API_KEY = "C5CDB9175BD6C2D2675CC006A5C9192E2B0DC4D673CE3191FBD393A0D3B721AB";
+
 /**
  * Returns the state of the fountain to the client in a JSON object.
  */
@@ -34,6 +37,27 @@ if (isset($_POST['updateState'])) {
         echo $_SESSION['fountainState']->getState();
     } else {
         echo "{\"error\":true,\"errormessage\":\"The native server is not running.\"}";
+    }
+}
+
+
+
+
+if (isset($_POST['valveState']) || isset($_POST['restrictState'])) {
+    require "api.php";
+
+    if (!isset($_SESSION)) {
+        session_start();
+    }
+
+    if (!isset($_SESSION['AUTHORIZED'])) {
+        die("Not authorized.");
+    }
+
+    if (isset($_POST['valveState'])) {
+        api_setValveState($WEBFRONT_API_KEY, $_POST['valveState']);
+    } else {
+        api_setRestrictState($WEBFRONT_API_KEY, $_POST['restrictState']);
     }
 }
 ?>
