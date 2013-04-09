@@ -56,6 +56,7 @@ window.onresize = function() {
 //before this script.
 var viewModel = ko.mapping.fromJS(defaultData);
 
+
 //New state callback - this gets executed whenever we receive an updated state
 //datagram from the server; this is responsible for updating the DOM with new
 //information by updatnig the knockout viewmodel.

@@ -5,5 +5,7 @@ var defaultData = {
     error: false,
     errormessage: "No error",
     fountainState: "Initializing Webfront...",
-    valveState: 0
+    valveState: 0,
+    restrictState: 0,
+    LMOC: false
 }
