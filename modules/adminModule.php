@@ -9,17 +9,27 @@
  * quite what we want to be on this page but we'll see.
  */
 
+if (isset($_POST['APIGenUser']) && isset($_POST['APIGenPriority'])) {
+    require "api.php";
+
+    if (!isset($_SESSION)) {
+        session_start();
+    }
+
+    if (!isset($_SESSION['AUTHORIZED'])) {
+        die("Not authorized.");
+    }
+
+    //We'll generate the actual API key here and pass it through
+    $generatedKey = "i'm a test API key";
+    api_generateApiKeytuple($generatedkey, $_POST['APIGenUser'], $_POST['APIGenPrioriy']);
+}
+
 class adminModule extends module {
 
     function __construct() {
         parent::__construct("<i class=\"icon-wrench\"></i> Admin", "adminModule");
     }
-
-   /* function getInnerContent() {
-        return '<h2>Policy Details</h2>
-            <p>Manage API access and do other administrative things.</p>
-            <h3>API Keys</h3>';
-    }*/
 
 }
 
