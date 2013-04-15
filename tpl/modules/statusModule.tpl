@@ -1,6 +1,6 @@
 <script src="js/modules/statusModule2.js"></script>
 
-<h2><abbr title="World in M&aacute;quina's Eyes">"Welcome To Our World!</abbr></h2>
+<h2><abbr title="World in M&aacute;quina's Eyes">Welcome To Our World!</abbr></h2>
 <p>This is the status page, where all relevant live statistics
     of the fountain and related software will be represented. These
     statistics are refreshed in real-time as the server finds out about
