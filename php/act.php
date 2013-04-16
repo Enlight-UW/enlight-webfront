@@ -28,6 +28,11 @@
 function generateAffectedBitmaskFromValveParameters() {
     $mask = 0;
 
+    if (isset($_POST['STATE'])) {
+        $mask = $_POST['STATE'];
+        return $mask;
+    }
+
     if ($_POST['V1'] === "true") {
         $mask += 1;
     }
@@ -113,7 +118,7 @@ $fakeKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 //FIXME: MVP implementation! Doesn't check the keys or anything, just does stuff
 //because we just need things to work for expo right now.
 if (!isset($_POST['request'])) {
-    echo '{success:false;}';
+    echo '{"success":false}';
     exit(0);
 }
 
@@ -126,5 +131,5 @@ switch ($_POST['request']) {
         break;
 }
 
-echo '{success:true;}';
+echo '{"success": true}';
 ?>
