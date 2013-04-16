@@ -1,7 +1,7 @@
 <script src="js/modules/serverModule.js"></script>
 
 <h2>Get Personal</h2>
-<p>Here you can perform various operations on the server. These shouldn\'t really need to be used that often, but if something goes horribly wrong then these might come in handy.</p>
+<p>Here you can perform various operations on the server. These shouldn't really need to be used that often, but if something goes horribly wrong then these might come in handy.</p>
 <!-- TODO: Make these "buttons" ajax-y -->
 <div class="well">
     <dl class="dl-horizontal">
