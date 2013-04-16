@@ -25,10 +25,25 @@ function api_sendTestMessage($message) {
     api_masterSend(0x4, $message);
 }
 
-function api_generateApiKeytuple($generatedkey, $user, $priority) {
+function api_generateApiKeytuple($randomness, $user, $priority) {
     if (!is_numeric($priority)) {
         return;
     }
+
+    $generatedKey = hash("sha256", $randomness);
+
+    if (strlen($generatedKey) != 64) {
+        //Key is the wrong size
+        return;
+    }
+    
+    //Since the colon is our delimiter, we don't want it to be a part of any
+    //name in this file.
+    if (strstr($user, ':') !== FALSE) {
+        return;
+    }
+
+    file_put_contents('../SHADOW/ApiKeys', "\n" . $generatedKey . ':' . $user . ':' . $priority, FILE_APPEND);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
