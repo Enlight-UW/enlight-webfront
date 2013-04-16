@@ -28,78 +28,78 @@
 function generateAffectedBitmaskFromValveParameters() {
     $mask = 0;
 
-    if ($_POST['V1']) {
+    if ($_POST['V1'] === "true") {
         $mask += 1;
     }
-    if ($_POST['V2']) {
+    if ($_POST['V2'] === "true") {
         $mask += 2;
     }
-    if ($_POST['V3']) {
+    if ($_POST['V3'] === "true") {
         $mask += 4;
     }
-    if ($_POST['V4']) {
+    if ($_POST['V4'] === "true") {
         $mask += 8;
     }
-    if ($_POST['V5']) {
+    if ($_POST['V5'] === "true") {
         $mask += 16;
     }
-    if ($_POST['V6']) {
+    if ($_POST['V6'] === "true") {
         $mask += 32;
     }
-    if ($_POST['V7']) {
+    if ($_POST['V7'] === "true") {
         $mask += 64;
     }
-    if ($_POST['V8']) {
+    if ($_POST['V8'] === "true") {
         $mask += 128;
     }
-    if ($_POST['V9']) {
+    if ($_POST['V9'] === "true") {
         $mask += 256;
     }
-    if ($_POST['V10']) {
+    if ($_POST['V10'] === "true") {
         $mask += 512;
     }
-    if ($_POST['VC']) {
+    if ($_POST['VC'] === "true") {
         $mask += 1024;
     }
-    if ($_POST['VR']) {
+    if ($_POST['VR'] === "true") {
         $mask += 2048;
     }
 
 
-    if ($_POST['H1']) {
+    if ($_POST['H1'] === "true") {
         $mask += 4096;
     }
-    if ($_POST['H2']) {
+    if ($_POST['H2'] === "true") {
         $mask += 8192;
     }
-    if ($_POST['H3']) {
+    if ($_POST['H3'] === "true") {
         $mask += 16384;
     }
-    if ($_POST['H4']) {
+    if ($_POST['H4'] === "true") {
         $mask += 32768;
     }
-    if ($_POST['H5']) {
+    if ($_POST['H5'] === "true") {
         $mask += 65536;
     }
-    if ($_POST['H6']) {
+    if ($_POST['H6'] === "true") {
         $mask += 131072;
     }
-    if ($_POST['H7']) {
+    if ($_POST['H7'] === "true") {
         $mask += 262144;
     }
-    if ($_POST['H8']) {
+    if ($_POST['H8'] === "true") {
         $mask += 524288;
     }
-    if ($_POST['H9']) {
+    if ($_POST['H9'] === "true") {
         $mask += 1048576;
     }
-    if ($_POST['H10']) {
+    if ($_POST['H10'] === "true") {
         $mask += 2097152;
     }
-    if ($_POST['HC']) {
+    if ($_POST['HC'] === "true") {
         $mask += 4194304;
     }
-    if ($_POST['HR']) {
+    if ($_POST['HR'] === "true") {
         $mask += 8388608;
     }
 
