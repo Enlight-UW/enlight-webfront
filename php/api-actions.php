@@ -36,7 +36,7 @@ function api_generateApiKeytuple($randomness, $user, $priority) {
         //Key is the wrong size
         return;
     }
-    
+
     //Since the colon is our delimiter, we don't want it to be a part of any
     //name in this file.
     if (strstr($user, ':') !== FALSE) {
@@ -57,6 +57,10 @@ function api_setValveState($key, $state) {
 
 function api_setRestrictState($key, $state) {
     api_masterSend(0x6, $key . $state);
+}
+
+function api_toggleValveState($key, $state) {
+    api_masterSend(0x7, $key . $state);
 }
 
 ?>
