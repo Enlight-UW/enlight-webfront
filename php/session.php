@@ -38,7 +38,7 @@
  */
 $_SESSION['mysql_host'] = "localhost";
 
-require "php/startDatabase.php";
+//require "php/startDatabase.php";
 
 //Check if module objects have been created yet. If not, make them. The ordering
 //here will affect the order in which these appear on the navbar.

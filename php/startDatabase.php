@@ -7,6 +7,10 @@
  * 
  * Include this file before making database requests, since the connection to
  * the DB seems to drop according to the "whenever PHP feels like it" rule.
+ * 
+ * 
+ * Depracating this since MySQL is long in the tooth and we've got better ways
+ * anyway.
  */
 
 if (!isset($_SESSION)) {
