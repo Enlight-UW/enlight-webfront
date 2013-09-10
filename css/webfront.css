@@ -10,3 +10,11 @@ body {
     margin: 16px;
     background-color: #CFCCCD;
 }
+
+/**
+ * Temporary shadow effect to make the labels on the picture more visible, might
+ * change this in the future...
+ */
+#innerFountainStatusTmpOffset span.label {
+    box-shadow:  1px 1px 10px 1px #000;
+}
