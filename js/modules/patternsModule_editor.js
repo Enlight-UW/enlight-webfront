@@ -45,24 +45,24 @@ var patternEditorCanvasReady = false;
 //Some constants that probably shouldn't change but can if they have to I guess
 //------------------------------------------------------------------------------
 //How wide the valve list sidebar should be.
-const patternEditorSidebarSize = 96;
+var patternEditorSidebarSize = 96;
 
 //How wide each pattern cell should be.
-const patternEditorCellWidth = 28;
+var patternEditorCellWidth = 28;
 
 //How tall each valve row should be drawn.
-const patternEditorCellHeight = 14;
+var patternEditorCellHeight = 14;
 
 //Resolution (in milliseconds) of each discrete on/off state.
-const patternEditorResolution = 250;
+var patternEditorResolution = 250;
 
 //Maximum length of a pattern. This should be a multiple of 8 for a efficient
 //use of bitmaps, and it will imply that the max length of any pattern is this
 //multiplied by the resolution. Default is 480 (120 seconds).
-const patternEditorMaxLength = 480;
+var patternEditorMaxLength = 480;
 
 //List of all the valves.
-const patternEditorValves = new Array(
+var patternEditorValves = new Array(
     "V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10",
     "VC", "VR",
     "H1", "H2", "H3", "H4", "H5", "H6", "H7", "H8", "H9", "H10",
