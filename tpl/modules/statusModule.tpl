@@ -8,6 +8,7 @@
     state of things, as far as the Webfront is concerned. Not to say that
     things couldn\'t seem fine here yet still be broken, though.</p>
 <div class="well">
+
     <dl class="dl-horizontal">
 
 
@@ -57,6 +58,16 @@
 
 
     </dl>
+
+    <dl class="dl-horizontal">
+        <dt>Weather in Madison:</dt>
+        <dd><span id="weatherType">Loading</span> <span id="weatherTemp">weather...</span></dd>
+        <!-- Temporary hackish script so we don't overflow the forecast API... This will eventually be moved to the backend -->
+        <script type="text/javascript">
+
+        </script>
+
+    </dl>
 </div>
 
 
@@ -70,7 +81,8 @@
         until manual intervention is disabled.
     </p>
     <p style="text-align:center;" data-bind="style: {'display': LMOC() ? 'none' : 'block'}">
-        <a href="#" onclick="requestOverride(); return false;" class="btn btn-warning">
+        <a href="#" onclick="requestOverride();
+                return false;" class="btn btn-warning">
             Enable Override
         </a>
     </p>
@@ -79,62 +91,74 @@
         <tr>
             <th>Vertical</th>
             <td>
-                <a href="#" onclick="toggleValve(1); return false;" class="btn">
+                <a href="#" onclick="toggleValve(1);
+                return false;" class="btn">
                     V1
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(2); return false;" class="btn">
+                <a href="#" onclick="toggleValve(2);
+                return false;" class="btn">
                     V2
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(4); return false;" class="btn">
+                <a href="#" onclick="toggleValve(4);
+                return false;" class="btn">
                     V3
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(8); return false;" class="btn">
+                <a href="#" onclick="toggleValve(8);
+                return false;" class="btn">
                     V4
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(16); return false;" class="btn">
+                <a href="#" onclick="toggleValve(16);
+                return false;" class="btn">
                     V5
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(32); return false;" class="btn">
+                <a href="#" onclick="toggleValve(32);
+                return false;" class="btn">
                     V6
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(64); return false;" class="btn">
+                <a href="#" onclick="toggleValve(64);
+                return false;" class="btn">
                     V7
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(128); return false;" class="btn">
+                <a href="#" onclick="toggleValve(128);
+                return false;" class="btn">
                     V8
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(256); return false;" class="btn">
+                <a href="#" onclick="toggleValve(256);
+                return false;" class="btn">
                     V9
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(512); return false;" class="btn">
+                <a href="#" onclick="toggleValve(512);
+                return false;" class="btn">
                     V10
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(1024); return false;" class="btn">
+                <a href="#" onclick="toggleValve(1024);
+                return false;" class="btn">
                     VC
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(2048); return false;" class="btn">
+                <a href="#" onclick="toggleValve(2048);
+                return false;" class="btn">
                     VR
                 </a>
             </td>
@@ -144,62 +168,74 @@
         <tr>
             <th>Horizontal</th>
             <td>
-                <a href="#" onclick="toggleValve(4096); return false;" class="btn">
+                <a href="#" onclick="toggleValve(4096);
+                return false;" class="btn">
                     H1
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(8192); return false;" class="btn">
+                <a href="#" onclick="toggleValve(8192);
+                return false;" class="btn">
                     H2
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(16384); return false;" class="btn">
+                <a href="#" onclick="toggleValve(16384);
+                return false;" class="btn">
                     H3
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(32768); return false;" class="btn">
+                <a href="#" onclick="toggleValve(32768);
+                return false;" class="btn">
                     H4
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(65536); return false;" class="btn">
+                <a href="#" onclick="toggleValve(65536);
+                return false;" class="btn">
                     H5
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(131072); return false;" class="btn">
+                <a href="#" onclick="toggleValve(131072);
+                return false;" class="btn">
                     H6
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(262144); return false;" class="btn">
+                <a href="#" onclick="toggleValve(262144);
+                return false;" class="btn">
                     H7
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(524288); return false;" class="btn">
+                <a href="#" onclick="toggleValve(524288);
+                return false;" class="btn">
                     H8
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(1048576); return false;" class="btn">
+                <a href="#" onclick="toggleValve(1048576);
+                return false;" class="btn">
                     H9
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(2097152); return false;" class="btn">
+                <a href="#" onclick="toggleValve(2097152);
+                return false;" class="btn">
                     H10
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(4194304); return false;" class="btn">
+                <a href="#" onclick="toggleValve(4194304);
+                return false;" class="btn">
                     HC
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleValve(8388608); return false;" class="btn">
+                <a href="#" onclick="toggleValve(8388608);
+                return false;" class="btn">
                     HR
                 </a>
             </td>
@@ -222,62 +258,74 @@
         <tr>
             <th>Vertical</th>
             <td>
-                <a href="#" onclick="toggleRestrict(1); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(1);
+                return false;" class="btn">
                     V1
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(2); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(2);
+                return false;" class="btn">
                     V2
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(4); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(4);
+                return false;" class="btn">
                     V3
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(8); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(8);
+                return false;" class="btn">
                     V4
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(16); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(16);
+                return false;" class="btn">
                     V5
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(32); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(32);
+                return false;" class="btn">
                     V6
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(64); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(64);
+                return false;" class="btn">
                     V7
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(128); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(128);
+                return false;" class="btn">
                     V8
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(256); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(256);
+                return false;" class="btn">
                     V9
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(512); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(512);
+                return false;" class="btn">
                     V10
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(1024); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(1024);
+                return false;" class="btn">
                     VC
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(2048); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(2048);
+                return false;" class="btn">
                     VR
                 </a>
             </td>
@@ -287,62 +335,74 @@
         <tr>
             <th>Horizontal</th>
             <td>
-                <a href="#" onclick="toggleRestrict(4096); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(4096);
+                return false;" class="btn">
                     H1
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(8192); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(8192);
+                return false;" class="btn">
                     H2
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(16384); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(16384);
+                return false;" class="btn">
                     H3
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(32768); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(32768);
+                return false;" class="btn">
                     H4
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(65536); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(65536);
+                return false;" class="btn">
                     H5
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(131072); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(131072);
+                return false;" class="btn">
                     H6
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(262144); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(262144);
+                return false;" class="btn">
                     H7
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(524288); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(524288);
+                return false;" class="btn">
                     H8
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(1048576); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(1048576);
+                return false;" class="btn">
                     H9
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(2097152); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(2097152);
+                return false;" class="btn">
                     H10
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(4194304); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(4194304);
+                return false;" class="btn">
                     HC
                 </a>
             </td>
             <td>
-                <a href="#" onclick="toggleRestrict(8388608); return false;" class="btn">
+                <a href="#" onclick="toggleRestrict(8388608);
+                return false;" class="btn">
                     HR
                 </a>
             </td>
