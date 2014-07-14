@@ -102,13 +102,7 @@ A single valve object with the ability to query or set properties.
 ### Query [GET]
 + Response 200 (application/json)
 
-    + Header
-
-            X-My-Header: The Value
-
-    + Body
-
-            { "id": 2, "title": "Pick-up posters from post-office" }
+         { "id": {id}, "name": "H9", "spraying": true, "enabled": true }
 
 ### Set [POST]
 Set some properties about the valve, like whether it's on or off.
