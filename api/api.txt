@@ -23,7 +23,7 @@ Before attempting to acquire control, you can query to see if another API user h
             
 
 ## Request Control [/control/request]
-If your internal priority is higher than the current user (or no one else is using the API), you will be leased the ability to invoke commands. A control request can contain a desired length of control, and (based on load balancing or time-sharing or other factors) the server will respond with the actual expiration time of the control request. You may issue another control request before your current one expires, but if there are users waiting in the queue the server may deny it (based on priority levels; users of the same priority will be round-robined, while higher priority requests will always work). If "queuePosition" is 0 in the return, then you have directly taken control. Otherwise, you will have to wait. "success" will only be false if some kind of error (like authentication) happens. Being queued is not considered an error, so you might see "success" true even if you have to wait.
+If your internal priority is higher than the current user (or no one else is using the API), you will be leased the ability to invoke commands. A control request can contain a desired length of control, and (based on load balancing or time-sharing or other factors) the server will respond with the actual expiration time of the control request. You may issue another control request before your current one expires, but if there are users waiting in the queue the server may deny it (based on priority levels; users of the same priority will be round-robined, while higher priority requests will always work). If `queuePosition` is 0 in the return, then you have directly taken control. Otherwise, you will have to wait. `success` will only be false if some kind of error (like authentication) happens. Being queued is not considered an error, so you might see `success` true even if you have to wait.
 
 ### Request Control [POST]
 + Request (application/json)
@@ -50,7 +50,7 @@ If you decide to release your control early, you can hit this endpoint. This wil
 Once an API user has successfully requested control, they may change the valve states and do other cool things with the fountain.
 
 ## Valves  [/valves]
-Valves can be queried for their state. Some valves may be disabled due to malfunction, while others are on and spraying water. These states are reflected in the returned data. The 'id' field here represents the valve's position in any binary bitmask format ('id' 1 would be the least significant bit, and so on).
+Valves can be queried for their state. Some valves may be disabled due to malfunction, while others are on and spraying water. These states are reflected in the returned data. The `id` field here represents the valve's position in any binary bitmask format (`id` 1 would be the least significant bit, and so on).
 
 ### Query [GET]
 + Response 200 (application/json)
@@ -118,7 +118,7 @@ Set some properties about the valve, like whether it's on or off.
 The fountain can store patterns for later playback.
 
 ### Query [GET]
-Retrieve a list of known patterns.
+Retrieve a list of known patterns. This can also be used to determine if a pattern is running, by looking at the `active` field.
 
 + Response 200 (application/json)
 
@@ -135,7 +135,7 @@ Retrieve a list of known patterns.
     + id (required, number, `1`) ... Numeric `id` of the pattern to engage.
     
 ### Set [POST]
-Attempt to start playing a given pattern. This requires control of the fountain, but once your application's control is over, the pattern may or may not be set as the default playing pattern based on the 'setCurrent' attribute. If not set, the fountain will default to whatever it was playing before your application played the pattern.
+Attempt to start playing a given pattern. This requires control of the fountain, but once your application's control is over, the pattern may or may not be set as the default playing pattern based on the `setCurrent` attribute. If not set, the fountain will default to whatever it was playing before your application played the pattern.
 
 + Request (application/json)
 
