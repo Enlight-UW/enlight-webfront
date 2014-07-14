@@ -113,3 +113,34 @@ Set some properties about the valve, like whether it's on or off.
 + Response 200 (application/json)
 
         { "success": true }
+        
+## Patterns [/patterns]
+The fountain can store patterns for later playback.
+
+### Query [GET]
+Retrieve a list of known patterns.
+
++ Response 200 (application/json)
+
+        [
+            { "id": 1, "name": "Pattern name 1", "active": true },
+            { "id": 3, "name": "Pattern name 3", "active": false },
+            { "id": 4, "name": "Pattern name 4", "active": false }
+        ]
+        
+## Pattern [/pattern/{id}]
+
++ Parameters
+
+    + id (required, number, `1`) ... Numeric `id` of the pattern to engage.
+    
+### Set [POST]
+Attempt to start playing a given pattern. This requires control of the fountain, but once your application's control is over, the pattern may or may not be set as the default playing pattern based on the 'setCurrent' attribute. If not set, the fountain will default to whatever it was playing before your application played the pattern.
+
++ Request (application/json)
+
+        { "apikey": "some alphanumeric api key", "setCurrent": true }
+        
++ Response 200 (application/json)
+
+        { "success": true }
