@@ -85,10 +85,12 @@ $stmt_create_table_patternData = <<<stmt
             time INTEGER NOT NULL,
             valve REFERENCES valves(ID),
             action INTEGER NOT NULL
-        )
-            
-        
+        )        
 stmt;
+
+//
+// Create tables
+//
 
 $db = new SQLite3;
 $db->open('../webfront.sql');
@@ -98,4 +100,6 @@ $stmt = $db->prepare($stmt_create_table_apikeys);
 
 $res = $stmt->execute();
 
-echo $res->numColumns();
+//
+// Populate default valves
+//
