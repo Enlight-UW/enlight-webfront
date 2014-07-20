@@ -1,34 +1,21 @@
 <?php
-/**
- * Step 1: Require the Slim Framework
- *
- * If you are not using Composer, you need to require the
- * Slim Framework and register its PSR-0 autoloader.
- *
- * If you are using Composer, you can skip this step.
- */
-require 'Slim/Slim.php';
 
+// Initialize Slim REST framework.
+require 'Slim/Slim.php';
 \Slim\Slim::registerAutoloader();
 
-/**
- * Step 2: Instantiate a Slim application
- *
- * This example instantiates a Slim application using
- * its default settings. However, you will usually configure
- * your Slim application now by passing an associative array
- * of setting names and values into the application constructor.
- */
+// Initialize Slim application.
 $app = new \Slim\Slim();
 
-/**
- * Step 3: Define the Slim application routes
- *
- * Here we define several Slim application routes that respond
- * to appropriate HTTP request methods. In this example, the second
- * argument for `Slim::get`, `Slim::post`, `Slim::put`, `Slim::patch`, and `Slim::delete`
- * is an anonymous function.
- */
+// Set response headers to JSON (not using anything else here, so can do this
+// instead of per-request).
+$app->response->headers->set('Content-Type', 'application/json');
+
+// Define routes.
+
+//
+// Authentication
+//
 
 $app->get('/hello/:name', function ($name) {
     echo "Hello, $name";
