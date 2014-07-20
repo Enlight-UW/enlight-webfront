@@ -88,6 +88,40 @@ $stmt_create_table_patternData = <<<stmt
         )        
 stmt;
 
+
+//
+// Default values
+//
+
+$stmt_insert_default_valves = <<<stmt
+        INSERT OR IGNORE INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (1, 'V1', 'Vertical caliper jet 1', 0, 1),
+            (2, 'V2', 'Vertical caliper jet 2', 0, 1),
+            (3, 'V3', 'Vertical caliper jet 3', 0, 1),
+            (4, 'V4', 'Vertical caliper jet 4', 0, 1),
+            (5, 'V5', 'Vertical caliper jet 5', 0, 1),
+            (6, 'V6', 'Vertical caliper jet 6', 0, 1),
+            (7, 'V7', 'Vertical caliper jet 7', 0, 1),
+            (8, 'V8', 'Vertical caliper jet 8', 0, 1),
+            (9, 'V9', 'Vertical caliper jet 9', 0, 1),
+            (10, 'V10', 'Vertical caliper jet 10', 0, 1),
+            (11, 'VC', 'Vertical caliper jet center', 0, 1),
+            (12, 'VR', 'Vertical caliper jet ring', 0, 1),
+            (13, 'H1', 'Horizontal caliper jet 1 (pointed up)', 0, 1),
+            (14, 'H2', 'Horizontal caliper jet 2', 0, 1),
+            (15, 'H3', 'Horizontal caliper jet 3', 0, 1),
+            (16, 'H4', 'Horizontal caliper jet 4', 0, 1),
+            (17, 'H5', 'Horizontal caliper jet 5', 0, 1),
+            (18, 'H6', 'Horizontal caliper jet 6', 0, 1),
+            (19, 'H7', 'Horizontal caliper jet 7', 0, 1),
+            (20, 'H8', 'Horizontal caliper jet 8', 0, 1),
+            (21, 'H9', 'Horizontal caliper jet 9', 0, 1),
+            (22, 'H10', 'Horizontal caliper jet 10', 0, 1),
+            (23, 'HC', 'Horizontal caliper jet center', 0, 1),
+            (24, 'HR', 'Horizontal caliper jet ring', 0, 1)
+stmt;
+
 //
 // Create tables
 //
@@ -95,11 +129,24 @@ stmt;
 $db = new SQLite3;
 $db->open('../webfront.sql');
 
-// API key table
-$stmt = $db->prepare($stmt_create_table_apikeys);
+function runQueryAndPrintStatus($db, $msg, $query) {
+    echo $msg;
+    $stmt = $db->prepare($query);
+    if ($stmt->execute() === FALSE)
+        die($db->lastErrorMsg());
+    echo ' ok<br />';    
+}
 
-$res = $stmt->execute();
+runQueryAndPrintStatus($db, 'Creating API keys table...', $stmt_create_table_apikeys);
+runQueryAndPrintStatus($db, 'Creating valves table...', $stmt_create_table_valves);
+runQueryAndPrintStatus($db, 'Creating control queue table...', $stmt_create_table_controlQueue);
+runQueryAndPrintStatus($db, 'Creating patterns table...', $stmt_create_table_patterns);
+runQueryAndPrintStatus($db, 'Creating pattern data table...', $stmt_create_table_patternData);
 
 //
 // Populate default valves
 //
+
+runQueryAndPrintStatus($db, 'Inserting default valves...', $stmt_insert_default_valves);
+
+echo 'done.';
