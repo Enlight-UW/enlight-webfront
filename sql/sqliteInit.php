@@ -15,13 +15,13 @@
  * a boolean enabled value (0 = disabled or revoked).
  */
 $stmt_create_table_apikeys = <<<stmt
-   CREATE TABLE IF NOT EXISTS apikeys (
-        apikey TEXT PRIMARY KEY,
-        name TEXT,
-        priority INTEGER,
-        date INTEGER,
-        enabled INTEGER
-    )
+        CREATE TABLE IF NOT EXISTS apikeys (
+             apikey TEXT PRIMARY KEY,
+             name TEXT NOT NULL,
+             priority INTEGER NOT NULL,
+             date INTEGER NOT NULL,
+             enabled INTEGER DEFAULT 1 NOT NULL
+         )
 stmt;
 
 /**
@@ -32,19 +32,63 @@ stmt;
  * numeric priority field determines who should be in control. Queue positions
  * are tracked here as well.
  */
-
 $stmt_create_table_controlQueue = <<<stmt
-    CREATE TABLE IF NOT EXISTS controlQueue (
-        controllerID INTEGER PRIMARY KEY,
-        acquired INTEGER,
-        expires INTEGER,
-        priority INTEGER,
-        queuePosition INTEGER,
-        apikey REFERENCES apikeys (apikey)
+        CREATE TABLE IF NOT EXISTS controlQueue (
+            controllerID INTEGER PRIMARY KEY,
+            acquired INTEGER NOT NULL,
+            expires INTEGER NOT NULL,
+            priority INTEGER NOT NULL,
+            queuePosition INTEGER NOT NULL,
+            apikey REFERENCES apikeys (apikey)
         )
 stmt;
 
+/**
+ * A table of valves which describe the interactive elements of the fountain.
+ * Each valve has a numeric ID, a name, a description, and boolean enabled and
+ * spraying states.
+ */
+$stmt_create_table_valves = <<<stmt
+        CREATE TABLE IF NOT EXISTS valves (
+            ID INTEGER PRIMARY KEY,
+            name TEXT UNIQUE NOT NULL,
+            description TEXT,
+            spraying INTEGER NOT NULL,
+            enabled INTEGER DEFAULT 1 NOT NULL
+        )
+stmt;
 
+/**
+ * A table of patterns which are sequences of on/off triggers for valves. Each
+ * pattern consists of an ID, a name, a description, an active field, and an
+ * enabled field.
+ */
+$stmt_create_table_patterns = <<<stmt
+        CREATE TABLE IF NOT EXISTS patterns (
+            ID INTEGER PRIMARY KEY,
+            name TEXT UNIQUE NOT NULL,
+            description TEXT,
+            active INTEGER NOT NULL,
+            enabled INTEGER DEFAULT 1 NOT NULL
+        )
+stmt;
+
+/**
+ * A table of pattern data. Each pattern has associated with it a series of
+ * actions, represented here. A single entry represents one action. An action
+ * has a pattern ID reference, an activation time (since the start of pattern),
+ * a valve to action, and an action to take.
+ */
+$stmt_create_table_patternData = <<<stmt
+        CREATE TABLE IF NOT EXISTS patternData (
+            patternID REFERENCES patterns(ID),
+            time INTEGER NOT NULL,
+            valve REFERENCES valves(ID),
+            action INTEGER NOT NULL
+        )
+            
+        
+stmt;
 
 $db = new SQLite3;
 $db->open('../webfront.sql');
