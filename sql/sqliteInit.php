@@ -14,23 +14,43 @@
  * priorities will be able to take over), a creation date (epoch timestamp), and
  * a boolean enabled value (0 = disabled or revoked).
  */
-$stmt_create_apikey_table = <<<stmt
-   CREATE TABLE IF NOT EXISTS apikeys
-       (apikey TEXT PRIMARY KEY,
+$stmt_create_table_apikeys = <<<stmt
+   CREATE TABLE IF NOT EXISTS apikeys (
+        apikey TEXT PRIMARY KEY,
         name TEXT,
         priority INTEGER,
         date INTEGER,
-        enabled INTEGER)
+        enabled INTEGER
+    )
+stmt;
+
+/**
+ * A table of api keys which are currently controlling or in queue for
+ * controlling the fountain. Each has a controllerID associated with it which
+ * represents this unique instance of fountain control (unique for a while, at
+ * least). Aquired and expires timestamps determine a period of control, and a
+ * numeric priority field determines who should be in control. Queue positions
+ * are tracked here as well.
+ */
+
+$stmt_create_table_controlQueue = <<<stmt
+    CREATE TABLE IF NOT EXISTS controlQueue (
+        controllerID INTEGER PRIMARY KEY,
+        acquired INTEGER,
+        expires INTEGER,
+        priority INTEGER,
+        queuePosition INTEGER,
+        apikey REFERENCES apikeys (apikey)
+        )
 stmt;
 
 
-$stmt_create_
 
 $db = new SQLite3;
 $db->open('../webfront.sql');
 
 // API key table
-$stmt = $db->prepare($stmt_create_apikey_table);
+$stmt = $db->prepare($stmt_create_table_apikeys);
 
 $res = $stmt->execute();
 
