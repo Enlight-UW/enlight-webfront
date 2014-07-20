@@ -30,6 +30,10 @@ $app = new \Slim\Slim();
  * is an anonymous function.
  */
 
+$app->get('/hello/:name', function ($name) {
+    echo "Hello, $name";
+});
+
 // GET route
 $app->get(
     '/',
