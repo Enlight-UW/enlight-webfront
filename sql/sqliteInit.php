@@ -3,6 +3,7 @@
  * Initialize the database (if need be). This describes the schema and creates
  * the tables for the Webfront.
  */
+require '../constants.php';
 
 //
 // Table schemas
@@ -126,7 +127,7 @@ stmt;
 // Create tables
 //
 
-$db = new SQLite3('../webfront.sql');
+$db = new SQLite3('../' . $DB_FILENAME);
 
 function runQueryAndPrintStatus($db, $msg, $query) {
     echo $msg;
