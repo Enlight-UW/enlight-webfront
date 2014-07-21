@@ -63,15 +63,15 @@ if ($app->request->isPost()) {
     
     //TODO: do these checks work?
     if (sizeof($bodyj) === 0) {
-        die('{"success":false,"message":"No request body during post!"');
+        die('{"success":false,"message":"No request body during post!"}');
     }
     
     if (!isset($bodyj[0]->apikey)) {
-        die('{"success":false,"message":"No API key in POST body!"');
+        die('{"success":false,"message":"No API key in POST body!"}');
     }
     
     if (!verifyAPIKey($bodyj[0]->apikey)) {
-        die('{"success":false,"message":"Invalid API key!"');
+        die('{"success":false,"message":"Invalid API key!"}');
     }
     
     // API key is known valid at this point, and this POST request can continue.
