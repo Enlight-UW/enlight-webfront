@@ -127,7 +127,6 @@ stmt;
 //
 
 $db = new SQLite3('../webfront.sql');
-//$db->open(;
 
 function runQueryAndPrintStatus($db, $msg, $query) {
     echo $msg;
