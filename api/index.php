@@ -56,7 +56,29 @@ stmt;
 
 ///////////////////////////////////////////////////////
 
-// Define routes.
+// Grab the API key from this request if it's a POST, and verify this API key.
+if ($app->request->isPost()) {
+    $body = $app->request->getBody();
+    $bodyj = json_decode($body);
+    
+    //TODO: do these checks work?
+    if (sizeof($bodyj) === 0) {
+        die('{"success":false,"message":"No request body during post!"');
+    }
+    
+    if (!isset($bodyj[0]->apikey)) {
+        die('{"success":false,"message":"No API key in POST body!"');
+    }
+    
+    if (!verifyAPIKey($bodyj[0]->apikey)) {
+        die('{"success":false,"message":"Invalid API key!"');
+    }
+    
+    // API key is known valid at this point, and this POST request can continue.
+}
+
+// Define routes. At this point, the key is already verified and only things like priority
+// need to be checked.
 
 /**
  * Query the current control queue.
