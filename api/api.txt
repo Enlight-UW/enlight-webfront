@@ -23,8 +23,7 @@ Before attempting to acquire control, you can query to see if another API user h
             
 
 ## Request Control [/control/request]
-If your internal priority is higher than the current user (or no one else is using the API), you will be leased the ability to invoke commands. A control request can contain a desired length of control, and (based on load balancing or time-sharing or other factors) the server will respond with the actual expiration time of the control request. You may issue another control request before your current one expires, but if there are users waiting in the queue the server may deny it (based on priority levels; users of the same priority will be round-robined, while higher priority requests will always work). If `queuePosition` is 0 in the return, then you have directly taken control. Otherwise, you will have to wait. `success` will only be false if some kind of error (like authentication) happens. Being queued is not considered an error, so you might see `success` true even if you have to wait. If your client has to wait, the `acquired` field will try to indicate approximately when you can expect control. The requested time will be added to this to determine an expiration time. It is still possible this window might not be available to you even after waiting if someone with a higher priority comes along. In that case, just keep requesting a position and eventually you should get one...
-
+If your internal priority is higher than the current user (or no one else is using the API), you will be leased the ability to invoke commands. A control request can contain a desired length of control, and (based on load balancing or time-sharing or other factors) the server will respond with the actual acquisition time of the control request. Issuing another control request while you have one in the queue will not do anything. The server will round-robin, with precedence given to higher priority levels. If `queuePosition` is 0 in the return, then you have directly taken control. Otherwise, you will have to wait. `success` will only be false if some kind of error (like authentication) happens. Being queued is not considered an error, so you might see `success` true even if you have to wait. If your client has to wait, the `acquire` field will try to indicate approximately when you can expect control. The requested time will be added to this to determine an expiration time. It is still possible this window might not be available to you even after waiting if someone with a higher priority comes along. In that case, just keep requesting a position and eventually you should get one...
 ### Request Control [POST]
 + Request (application/json)
 
@@ -32,7 +31,7 @@ If your internal priority is higher than the current user (or no one else is usi
         
 + Response 200 (application/json)
 
-        { "success": true, "acquired": 12340010, "expires": 12340015, "priority": 3, "controllerID": 45, "queuePosition": 0 }
+        { "success": true, "acquire": 12340010, "ttl": 15, "priority": 3, "controllerID": 45, "queuePosition": 0 }
         
 ## Release Control [/control/release]
 If you decide to release your control early, you can hit this endpoint. This will open the control up for other users. The server doesn't notify other users of this, though - they'd still have to query to see that it opened up.
