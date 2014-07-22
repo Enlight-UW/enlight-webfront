@@ -38,6 +38,22 @@ stmt;
     
 }
 
+function getControllingKey() {
+    $Q_QUERY_CONTROLLING_KEY = <<<stmt
+        SELECT apikey, acquire AS acq
+        FROM controlQueue
+        WHERE queuePosition=0 AND acquire=MAX(acq)
+stmt;
+
+    $stmt = $db->prepare($Q_QUERY_CONTROLLING_KEY);
+    $res = $stmt->execute();
+    
+    if ($res === FALSE)
+        return NULL;
+    
+    return $res->fetchArray()[0]['apikey'];
+    
+}
 /**
  * Takes a result set from a SQLite3 query and returns all the rows as JSON. If
  * there is more than one row, they are returned in the format:
