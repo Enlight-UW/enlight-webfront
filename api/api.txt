@@ -79,7 +79,7 @@ Valves can be queried for their state. Some valves may be disabled due to malfun
           { "id": 21, "name": "H9", "spraying": true, "enabled": true },
           { "id": 22, "name": "H10", "spraying": true, "enabled": true },
           { "id": 23, "name": "HC", "spraying": true, "enabled": true },
-          { "id": 24, "name": "HR", "spraying": true, "enabled": true },
+          { "id": 24, "name": "HR", "spraying": true, "enabled": true }
         ]
         
 ### Set [POST]
