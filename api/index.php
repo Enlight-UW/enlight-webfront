@@ -81,8 +81,37 @@ stmt;
 /**
  * Request control with this API key.
  */
-$app->post('/control/request', function () {
-    //TODO: find highest maximum queue position in this priority
+$app->post('/control/request', function () use ($db) {
+    
+    // Find our priority...
+    $Q_QUERY_PRIORITY = <<<stmt
+        SELECT priority
+        FROM apikeys
+        WHERE apikey=:apikey
+stmt;
+    
+    $stmt = $db->prepare($Q_QUERY_PRIORITY);
+    $stmt->bindValue(':apikey', $requestJSON[0]->apikey);
+    $res = $stmt->execute();
+    
+    if ($res === FALSE)
+        failureJSON($db->lastErrorMsg());
+    
+    $r = $res->fetchArray();
+    $priority = 0;
+    
+    if ($r)
+        $priority = $r['priority'];
+    else
+        failureJSON('No API key priority entry.');
+        
+    // Find last queue position in this priority - unless this key already has a
+    // control queue entry, in which case abort because we don't want one API key
+    // adding itself to the queue again before it expires. Note - the queue contains
+    // a history of all control requests by virtue of how it is constructed, so
+    // be sure to account only for still valid entries (expire time in the future).
+    
+    
     
     //TODO: and set us to one more, with a time of that one's expiry + our
     // requested time.
