@@ -46,7 +46,7 @@ If you decide to release your control early, you can hit this endpoint. This wil
 
         { "success": true }
 
-# Group Fountain Interaction
+# Group Valve Interaction
 Once an API user has successfully requested control, they may change the valve states and do other cool things with the fountain.
 
 ## Valves  [/valves]
@@ -113,7 +113,10 @@ Set some properties about the valve, like whether it's on or off.
 + Response 200 (application/json)
 
         { "success": true }
-        
+
+# Group Pattern Management
+Stored patterns can be queried and executed using the API as well.
+
 ## Patterns [/patterns]
 The fountain can store patterns for later playback.
 

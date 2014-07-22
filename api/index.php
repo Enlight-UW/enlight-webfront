@@ -65,14 +65,14 @@ stmt;
  * Request control with this API key.
  */
 $app->post('/control/request', function () {
-   
+   //TODO
 });
 
 /**
  * Release any current controls.
  */
 $app->post('/control/release', function() {
-    
+    //TODO
 });
 
 
@@ -95,6 +95,45 @@ stmt;
         die($db->lastErrorMsg());
     
     rowsAsJSON($res);
+});
+
+/**
+ * Set all valve states at once with a bitmask.
+ */
+$app->post('/valves', function() use ($db) {
+   //TODO 
+});
+
+/**
+ * Get info about a specific valve.
+ */
+$app->get('/valves/:id', function() use ($db) {
+    //TODO
+});
+
+/**
+ * Set a specific valve.
+ */
+$app->post('/valves/:id', function() use ($db) {
+    //TODO
+});
+
+////////////////////////////////////////////////////////////////////////////////
+// Patterns
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Return a list of patterns known to the server.
+ */
+$app->get('/patterns', function() use ($db) {
+    //TODO
+});
+
+/**
+ * Tell the server to play a specific pattern.
+ */
+$app->post('/patterns/:id', function() use ($db) {
+    //TODO
 });
 
 // Start Slim application.
