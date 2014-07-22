@@ -17,27 +17,44 @@ $app->response->headers->set('Content-Type', 'application/json');
 // Initialize database connection, we'll probably need it.
 $db = new SQLite3('../' . $DB_FILENAME);
 
+// Create convenience JSON object out of request body. It might not exist.
+$requestJSON = json_decode($app->request->getBody());
+
+function failureJSON($msg) {
+    die('{"success":false,"message":"' . $msg . '"}');
+}
+
+/**
+ * Successful request - return a JSON encoded associative array of whatever
+ * new information is relevant to the client.
+ * 
+ * @param type $assArray An associative array of new 
+ */
+function successJSON($assArray) {
+    $successToken = array('success'=>'true');
+    $ret = array_merge($assArray, $successToken);
+    
+    echo (json_encode($ret));
+}
+
 // Grab the API key from this request if it's a POST, and verify this API key.
-if ($app->request->isPost()) {
-    $body = $app->request->getBody();
-    $bodyj = json_decode($body);
-    
+if ($app->request->isPost()) {     
     //TODO: do these checks work?
-    if (sizeof($bodyj) === 0)
-        die('{"success":false,"message":"No request body during post!"}');
+    if (sizeof($requestJSON) === 0)
+        failureJSON('No request body during post!');
     
-    if (!isset($bodyj[0]->apikey))
-        die('{"success":false,"message":"No API key in POST body!"}');
+    if (!isset($requestJSON[0]->apikey))
+        failureJSON('No API key in POST body');
     
-    if (!verifyAPIKey($db, $bodyj[0]->apikey))
-        die('{"success":false,"message":"Invalid API key!"}');
+    if (!verifyAPIKey($db, $requestJSON[0]->apikey))
+        failureJSON('Invalid API key!');
     
     // API key is known valid at this point, and this POST request can continue.
 }
 
-// Define routes. At this point, the key is already verified and only things like priority
-// need to be checked.
 
+// Define routes. At this point, the key is already verified and only things
+// like priority need to be checked.
 
 ////////////////////////////////////////////////////////////////////////////////
 // Authentication and control
@@ -65,14 +82,28 @@ stmt;
  * Request control with this API key.
  */
 $app->post('/control/request', function () {
-   //TODO
+    //TODO
 });
 
 /**
  * Release any current controls.
  */
-$app->post('/control/release', function() {
-    //TODO
+$app->post('/control/release', function() use ($db) {
+    // Users can only release controllerIDs under their provided API key.
+    // Releasing control will release it for ALL controllerIDs possessed by this
+    // API key. Might make that more granular in the future.
+    $Q_RELEASE_CONTROL = <<<stmt
+            UPDATE controlQueue
+            SET expires = strftime('%s','now','-1 second')
+            WHERE apikey=:apikey
+stmt;
+    
+    $stmt = $db->prepare($Q_QUERY_VALVE);
+    $stmt->bindValue(':apikey', $requestJSON[0]->apikey);
+    $res = $stmt->execute();
+    if ($res === FALSE)
+        failureJSON($db->lastErrorMsg());    
+    successJSON([]);
 });
 
 
@@ -92,7 +123,7 @@ stmt;
     $stmt = $db->prepare($Q_QUERY_VALVES);
     $res = $stmt->execute();
     if ($res === FALSE)
-        die($db->lastErrorMsg());
+        failureJSON($db->lastErrorMsg());
     
     rowsAsJSON($res);
 });
@@ -101,21 +132,55 @@ stmt;
  * Set all valve states at once with a bitmask.
  */
 $app->post('/valves', function() use ($db) {
-   //TODO 
+   // TODO
+          
+stmt;
 });
 
 /**
  * Get info about a specific valve.
  */
-$app->get('/valves/:id', function() use ($db) {
-    //TODO
+$app->get('/valves/:id', function() use ($db, $app) {
+    $Q_QUERY_VALVE = <<<stmt
+        SELECT ID, name, description, spraying, enabled
+        FROM valves
+        WHERE ID=:id
+stmt;
+    
+    if (!isset($requestJSON[0]->id))
+        failureJSON('No valve ID requested!');
+    
+    $stmt = $db->prepare($Q_QUERY_VALVE);
+    $stmt->bindValue(':id', $requestJSON[0]->id);
+    $res = $stmt->execute();
+    
+    if ($res === FALSE)
+        die($db->lastErrorMsg());
+    
+    rowsAsJSON($res);
 });
 
 /**
  * Set a specific valve.
  */
 $app->post('/valves/:id', function() use ($db) {
-    //TODO
+    $Q_QUERY_VALVE = <<<stmt
+        SELECT ID, name, description, spraying, enabled
+        FROM valves
+        WHERE ID=:id
+stmt;
+    
+    if (!isset($requestJSON[0]->id))
+        failureJSON('No valve ID requested!');
+    
+    $stmt = $db->prepare($Q_QUERY_VALVE);
+    $stmt->bindValue(':id', $requestJSON[0]->id);
+    $res = $stmt->execute();
+    
+    if ($res === FALSE)
+        die($db->lastErrorMsg());
+    
+    rowsAsJSON($res);
 });
 
 ////////////////////////////////////////////////////////////////////////////////
