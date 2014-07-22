@@ -23,23 +23,25 @@ if ($app->request->isPost()) {
     $bodyj = json_decode($body);
     
     //TODO: do these checks work?
-    if (sizeof($bodyj) === 0) {
+    if (sizeof($bodyj) === 0)
         die('{"success":false,"message":"No request body during post!"}');
-    }
     
-    if (!isset($bodyj[0]->apikey)) {
+    if (!isset($bodyj[0]->apikey))
         die('{"success":false,"message":"No API key in POST body!"}');
-    }
     
-    if (!verifyAPIKey($db, $bodyj[0]->apikey)) {
+    if (!verifyAPIKey($db, $bodyj[0]->apikey))
         die('{"success":false,"message":"Invalid API key!"}');
-    }
     
     // API key is known valid at this point, and this POST request can continue.
 }
 
 // Define routes. At this point, the key is already verified and only things like priority
 // need to be checked.
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Authentication and control
+////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Query the current control queue.
@@ -56,9 +58,7 @@ stmt;
     if ($res === FALSE)
         die($db->lastErrorMsg());
     
-    while ($row = $res->fetchArray())
-            print_r($row);
-    
+    rowsAsJSON($res);
 });
 
 /**
@@ -76,6 +76,10 @@ $app->post('/control/release', function() {
 });
 
 
+////////////////////////////////////////////////////////////////////////////////
+// Fountain interaction
+////////////////////////////////////////////////////////////////////////////////
+
 /**
  * Query valve list.
  */
@@ -90,10 +94,7 @@ stmt;
     if ($res === FALSE)
         die($db->lastErrorMsg());
     
-    echo '[';
-    while ($row = $res->fetchArray())
-            echo json_encode($row) . ',';
-    echo ']';
+    rowsAsJSON($res);
 });
 
 // Start Slim application.

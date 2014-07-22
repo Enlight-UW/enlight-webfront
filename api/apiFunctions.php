@@ -37,3 +37,35 @@ stmt;
     return $r['priority'];
     
 }
+
+/**
+ * Takes a result set from a SQLite3 query and returns all the rows as JSON. If
+ * there is more than one row, they are returned in the format:
+ * 
+ *  [{"row0col0":"val","row0col1":"val"},{"row1col0":"val","row1col1":"val"}]
+ * 
+ * otherwise the surrounding braces are stripped and the format is:
+ * 
+ *  {"row0col0":"val","row0col1":"val"}
+ * 
+ * @param type $res The result set to convert to JSON.
+ * @return string A JSON representation of the result set.
+ */
+function rowsAsJSON($res) {
+    $count = 0;
+    $rs = '[';
+    
+    while ($row = $res->fetchArray()) {
+        $count++;
+        $rs .= json_encode($row) . ',';
+    }
+    
+     // Shave last comma to conform to JSON standard
+    $rs = substr($rs, 0, strlen($rs) - 1) . ']';
+    
+    // Get rid of array brackets if singleton
+    if ($count == 1)
+        $rs = substr($rs, 1, strlen($rs) - 1);
+    
+    return $rs;
+}
