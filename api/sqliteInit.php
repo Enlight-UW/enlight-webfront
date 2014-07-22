@@ -36,8 +36,8 @@ stmt;
 $stmt_create_table_controlQueue = <<<stmt
         CREATE TABLE IF NOT EXISTS controlQueue (
             controllerID INTEGER PRIMARY KEY AUTOINCREMENT,
-            acquired INTEGER NOT NULL,
-            expires INTEGER NOT NULL,
+            acquire INTEGER NOT NULL,
+            ttl INTEGER NOT NULL,
             priority INTEGER NOT NULL,
             queuePosition INTEGER NOT NULL,
             apikey REFERENCES apikeys (apikey)
