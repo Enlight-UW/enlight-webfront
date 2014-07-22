@@ -1,6 +1,6 @@
 <?php
 
-require '../constants.php';
+require 'constants.php';
 require 'apiFunctions.php';
 
 // Initialize Slim REST framework.
