@@ -1,14 +1,14 @@
 <?php
 
 
-function verifyAPIKey($key) use ($db) {
+function verifyAPIKey($db, $key) {
     $Q_QUERY_API_KEY_COUNT = <<<stmt
         SELECT COUNT(*) as count FROM apikeys
         WHERE apikey=:key
 stmt;
 
     $stmt = $db->prepare($Q_QUERY_API_KEY_COUNT);
-    $stmt->bindValue(':key', $key, SQLITE3_STRING)
+    $stmt->bindValue(':key', $key, SQLITE3_STRING);
     $res = $stmt->execute();
 
     //TODO: Error check
@@ -18,7 +18,7 @@ stmt;
     return $r['count'] > 0;
 }
 
-function getAPIKeyPriority($key) use ($db) {
+function getAPIKeyPriority($db, $key) {
     if (!verifyAPIKey($key))
         return 0;
 
@@ -28,7 +28,7 @@ function getAPIKeyPriority($key) use ($db) {
 stmt;
 
     $stmt = $db->prepare($Q_QUERY_API_KEY_PRIORITY);
-    $stmt->bindValue(':key', $key, SQLITE3_STRING)
+    $stmt->bindValue(':key', $key, SQLITE3_STRING);
     //TODO: Error check
     $res = $stmt->execute();
     

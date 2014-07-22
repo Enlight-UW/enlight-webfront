@@ -31,7 +31,7 @@ if ($app->request->isPost()) {
         die('{"success":false,"message":"No API key in POST body!"}');
     }
     
-    if (!verifyAPIKey($bodyj[0]->apikey)) {
+    if (!verifyAPIKey($db, $bodyj[0]->apikey)) {
         die('{"success":false,"message":"Invalid API key!"}');
     }
     
