@@ -82,7 +82,10 @@ stmt;
  * Request control with this API key.
  */
 $app->post('/control/request', function () {
-    //TODO
+    //TODO: find highest maximum queue position in this priority
+    
+    //TODO: and set us to one more, with a time of that one's expiry + our
+    // requested time.
 });
 
 /**
