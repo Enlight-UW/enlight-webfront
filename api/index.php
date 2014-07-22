@@ -141,7 +141,7 @@ $app->post('/control/release', function() use ($db) {
     // API key. Might make that more granular in the future.
     $Q_RELEASE_CONTROL = <<<stmt
             UPDATE controlQueue
-            SET expires = strftime('%s','now','-1 second')
+            SET ttl = 0
             WHERE apikey=:apikey
 stmt;
     
