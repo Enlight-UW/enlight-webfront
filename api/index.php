@@ -176,12 +176,35 @@ stmt;
 });
 
 /**
- * Set all valve states at once with a bitmask.
+ * Set all valve states at once with a bitmask. Only 'enabled' valves will be affected.
  */
 $app->post('/valves', function() use ($db) {
-   // TODO
-          
+    if (!isset($requestJSON[0]->bitmask))
+        failureJSON('No bitmask provided.');
+    
+    $stmt = $db->prepare("BEGIN TRANSACTION");
+    if ($stmt->execute() === FALSE)
+        failureJSON($db->lastErrorMsg());
+        
+    for ($i = 1; $i <= $NUM_VALVES; $i++) {
+        $Q_UPDATE_VALVE = <<<stmt
+            UPDATE valves
+            SET spraying=:spraying
+            WHERE ID=:id AND enabled<>0
 stmt;
+
+        $stmt = $db->prepare($Q_UPDATE_VALE);
+        $stmt->bindValue(':id', $i);
+        $stmt->bindValue(':spraying', (($requestJSON[0]->bitmask) >> ($i - 1)) & 1);
+        $res = $stmt->execute();
+        
+        if ($res === FALSE)
+            failureJSON($db->lastErrorMsg());
+    }
+    
+    $stmt = $db->prepare("COMMIT TRANSACTION");
+    if ($stmt->execute() === FALSE)
+        failureJSON($db->lastErrorMsg());
 });
 
 /**
@@ -202,7 +225,7 @@ stmt;
     $res = $stmt->execute();
     
     if ($res === FALSE)
-        die($db->lastErrorMsg());
+        failureJSON($db->lastErrorMsg());
     
     rowsAsJSON($res);
 });
