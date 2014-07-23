@@ -193,7 +193,7 @@ $app->post('/valves', function() use ($db) {
             WHERE ID=:id AND enabled<>0
 stmt;
 
-        $stmt = $db->prepare($Q_UPDATE_VALE);
+        $stmt = $db->prepare($Q_UPDATE_VALVE);
         $stmt->bindValue(':id', $i);
         $stmt->bindValue(':spraying', (($requestJSON[0]->bitmask) >> ($i - 1)) & 1);
         $res = $stmt->execute();
