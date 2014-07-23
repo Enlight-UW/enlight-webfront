@@ -178,7 +178,7 @@ stmt;
 /**
  * Set all valve states at once with a bitmask. Only 'enabled' valves will be affected.
  */
-$app->post('/valves', function() use ($db) {
+$app->post('/valves', function() use ($db, $NUM_VALVES) {
     if (!isset($requestJSON[0]->bitmask))
         failureJSON('No bitmask provided.');
     
