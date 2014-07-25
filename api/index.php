@@ -210,18 +210,18 @@ stmt;
 /**
  * Get info about a specific valve.
  */
-$app->get('/valves/:id', function() use ($db, $app) {
+$app->get('/valves/:id', function($valveID) use ($db, $app) {
     $Q_QUERY_VALVE = <<<stmt
         SELECT ID, name, description, spraying, enabled
         FROM valves
         WHERE ID=:id
 stmt;
     
-    if (!isset($requestJSON[0]->id))
+    if (!isset($valveID))
         failureJSON('No valve ID requested!');
     
     $stmt = $db->prepare($Q_QUERY_VALVE);
-    $stmt->bindValue(':id', $requestJSON[0]->id);
+    $stmt->bindValue(':id', $valveID);
     $res = $stmt->execute();
     
     if ($res === FALSE)
@@ -233,24 +233,12 @@ stmt;
 /**
  * Set a specific valve.
  */
-$app->post('/valves/:id', function() use ($db) {
-    $Q_QUERY_VALVE = <<<stmt
-        SELECT ID, name, description, spraying, enabled
-        FROM valves
-        WHERE ID=:id
-stmt;
-    
-    if (!isset($requestJSON[0]->id))
-        failureJSON('No valve ID requested!');
-    
-    $stmt = $db->prepare($Q_QUERY_VALVE);
-    $stmt->bindValue(':id', $requestJSON[0]->id);
-    $res = $stmt->execute();
-    
-    if ($res === FALSE)
-        die($db->lastErrorMsg());
-    
-    rowsAsJSON($res);
+$app->post('/valves/:id', function($valveID) use ($db) {
+    if (getControllingKey() !== $requestJSON[0]->apikey)
+        failureJSON('Not in control...');
+        
+
+    //TODO
 });
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -261,15 +249,58 @@ stmt;
  * Return a list of patterns known to the server.
  */
 $app->get('/patterns', function() use ($db) {
-    //TODO
+    
+    $Q_QUERY_PATTERNS = <<<stmt
+            SELECT ID, name, active, description
+            FROM patterns
+            WHERE active<>0
+stmt;
+    
+    $stmt = $db->prepare($Q_QUERY_PATTERNS);
+    $res = $stmt->execute();
+    
+    if ($res === FALSE)
+        failureJSON($db->lastErrorMsg());
+    
+    rowsAsJSON($res);
 });
 
 /**
  * Tell the server to play a specific pattern.
  */
-$app->post('/patterns/:id', function() use ($db) {
-    //TODO
+$app->post('/patterns/:id', function($patternID) use ($db) {
+    if (getControllingKey() !== $requestJSON[0]->apikey)
+        failureJSON('Not in control...');
+    
+    //TODO implement setCurrent
+    if (!isset($patternID))
+        failureJSON('No patternID specified...');
+    
+    $Q_CLEAR_PATTERNS = <<<stmt
+            UPDATE patterns
+            SET active=0           
+stmt;
+    
+    $res = $stmt->execute();
+    if ($res === FALSE)
+        failureJSON($db->lastErrorMsg());
+    
+    $Q_ENGAGE_PATTERN = <<<stmt
+            UPDATE patterns
+            SET active=1
+            WHERE ID=:id and enabled<>0
+stmt;
+    
+    $res = $stmt->execute();
+    if ($res === FALSE)
+        failureJSON($db->lastErrorMsg());
+    
+    successJSON([]);
 });
 
 // Start Slim application.
 $app->run();
+
+
+//TODO: Logic for things like reading the current pattern/controller/valve states
+// out and updating. Not sure on that implementation yet.
