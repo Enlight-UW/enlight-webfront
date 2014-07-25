@@ -51,8 +51,8 @@ stmt;
     if ($res === FALSE)
         return NULL;
     
-    return $res->fetchArray()[0]['apikey'];
-    
+    $ret = $res->fetchArray();
+    return $ret[0]['apikey'];    
 }
 /**
  * Takes a result set from a SQLite3 query and returns all the rows as JSON. If
