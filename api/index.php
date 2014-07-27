@@ -145,7 +145,7 @@ $app->post('/control/release', function() use ($db) {
             WHERE apikey=:apikey
 stmt;
     
-    $stmt = $db->prepare($Q_QUERY_VALVE);
+    $stmt = $db->prepare($Q_RELEASE_CONTROL);
     $stmt->bindValue(':apikey', $requestJSON[0]->apikey);
     $res = $stmt->execute();
     if ($res === FALSE)
@@ -210,7 +210,7 @@ stmt;
 /**
  * Get info about a specific valve.
  */
-$app->get('/valves/:id', function($valveID) use ($db, $app) {
+$app->get('/valves/:id', function($valveID) use ($db) {
     $Q_QUERY_VALVE = <<<stmt
         SELECT ID, name, description, spraying, enabled
         FROM valves
@@ -281,7 +281,9 @@ $app->post('/patterns/:id', function($patternID) use ($db) {
             SET active=0           
 stmt;
     
+    $stmt = $db->prepare($Q_CLEAR_PATTERNS);
     $res = $stmt->execute();
+    
     if ($res === FALSE)
         failureJSON($db->lastErrorMsg());
     
@@ -291,6 +293,7 @@ stmt;
             WHERE ID=:id and enabled<>0
 stmt;
     
+    $stmt = $db->prepare($Q_ENGAGE_PATTERN);
     $res = $stmt->execute();
     if ($res === FALSE)
         failureJSON($db->lastErrorMsg());
