@@ -3,7 +3,7 @@
  * Initialize the database (if need be). This describes the schema and creates
  * the tables for the Webfront.
  */
-require '../constants.php';
+require 'constants.php';
 
 //
 // Table schemas
