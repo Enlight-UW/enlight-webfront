@@ -205,6 +205,8 @@ stmt;
     $stmt = $db->prepare("COMMIT TRANSACTION");
     if ($stmt->execute() === FALSE)
         failureJSON($db->lastErrorMsg());
+    
+    successJSON([]);
 });
 
 /**
@@ -237,8 +239,23 @@ $app->post('/valves/:id', function($valveID) use ($db) {
     if (getControllingKey() !== $requestJSON[0]->apikey)
         failureJSON('Not in control...');
         
+    if (!isset($requestJSON[0]->bitmask))
+        failureJSON('No bitmask provided.');
+    
+    $Q_UPDATE_VALVE = <<<stmt
+        UPDATE valves
+        SET spraying=1
+        WHERE ID=:id AND enabled<>0
+stmt;
 
-    //TODO
+    $stmt = $db->prepare($Q_UPDATE_VALVE);
+    $stmt->bindValue(':id', $valveID);
+    $res = $stmt->execute();
+
+    if ($res === FALSE)
+        failureJSON($db->lastErrorMsg());
+
+    successJSON([]);
 });
 
 ////////////////////////////////////////////////////////////////////////////////
