@@ -37,6 +37,7 @@ function successJSON($assArray) {
     echo (json_encode($ret));
 }
 
+
 // Grab the API key from this request if it's a POST, and verify this API key.
 if ($app->request->isPost()) {     
     //TODO: do these checks work?
@@ -55,6 +56,11 @@ if ($app->request->isPost()) {
 
 // Define routes. At this point, the key is already verified and only things
 // like priority need to be checked.
+
+
+$app->get('/', function() {
+    echo 'API version 1A.';
+});
 
 ////////////////////////////////////////////////////////////////////////////////
 // Authentication and control
