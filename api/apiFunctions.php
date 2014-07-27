@@ -8,7 +8,7 @@ function verifyAPIKey($db, $key) {
 stmt;
 
     $stmt = $db->prepare($Q_QUERY_API_KEY_COUNT);
-    $stmt->bindValue(':key', $key, SQLITE3_STRING);
+    $stmt->bindValue(':key', $key);
     $res = $stmt->execute();
 
     //TODO: Error check
@@ -71,7 +71,7 @@ function rowsAsJSON($res) {
     $count = 0;
     $rs = '[';
     
-    while ($row = $res->fetchArray()) {
+    while ($row = $res->fetchArray()) {       
         $count++;
         $rs .= json_encode($row) . ',';
     }
@@ -81,7 +81,10 @@ function rowsAsJSON($res) {
     
     // Get rid of array brackets if singleton
     if ($count == 1)
-        $rs = substr($rs, 1, strlen($rs) - 1);
+        $rs = substr($rs, 1, strlen($rs) - 2);
+    
+    if (strlen($rs) == 1)
+        $rs = '[' . $rs;
     
     return $rs;
 }

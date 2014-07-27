@@ -16,6 +16,7 @@ $app->response->headers->set('Content-Type', 'application/json');
 
 // Initialize database connection, we'll probably need it.
 $db = new SQLite3('../' . $DB_FILENAME);
+$db->busyTimeout(500);
 
 // Create convenience JSON object out of request body. It might not exist.
 $requestJSON = json_decode($app->request->getBody());
@@ -44,10 +45,10 @@ if ($app->request->isPost()) {
     if (sizeof($requestJSON) === 0)
         failureJSON('No request body during post!');
     
-    if (!isset($requestJSON[0]->apikey))
+    if (!isset($requestJSON->apikey))
         failureJSON('No API key in POST body');
     
-    if (!verifyAPIKey($db, $requestJSON[0]->apikey))
+    if (!verifyAPIKey($db, $requestJSON->apikey))
         failureJSON('Invalid API key!');
     
     // API key is known valid at this point, and this POST request can continue.
@@ -60,6 +61,7 @@ if ($app->request->isPost()) {
 
 $app->get('/', function() {
     echo 'API version 1A.';
+      $db->close();
 });
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -71,23 +73,25 @@ $app->get('/', function() {
  */
 $app->get('/control/query', function () use ($db) {
     $Q_QUERY_CONTROL = <<<stmt
-        SELECT controllerID, acquire, ttl, priority, queuePosition
+        SELECT controllerID, acquire, ttl, priority, queuePosition, apikey
         FROM controlQueue
-        WHERE (acquire + ttl) > strftime('%s','now')
+        -- WHERE (acquire + ttl) > strftime('%s','now')
 stmt;
 
     $stmt = $db->prepare($Q_QUERY_CONTROL);
     $res = $stmt->execute();
+    
     if ($res === FALSE)
         die($db->lastErrorMsg());
-    
-    rowsAsJSON($res);
+
+    echo rowsAsJSON($res);
+    $db->close();
 });
 
 /**
  * Request control with this API key.
  */
-$app->post('/control/request', function () use ($db) {
+$app->post('/control/request', function () use ($db, $requestJSON) {
     // Find last queue position in this priority - unless this key already has a
     // control queue entry, in which case abort because we don't want one API key
     // adding itself to the queue again before it expires. Note - the queue contains
@@ -101,7 +105,7 @@ $app->post('/control/request', function () use ($db) {
     //    b) and with an expiration time which is the requested time + latest expiration time in this priority queue
     // 3) once that happens, extract the controllerID and return it to the client
     
-    $Q_REQUEST_CONTROL = <<<stmt
+/*    $Q_REQUEST_CONTROL = <<<stmt
         INSERT INTO controlQueue (priority, acquire, ttl, queuePosition, apikey)
         VALUES
             (
@@ -111,11 +115,31 @@ $app->post('/control/request', function () use ($db) {
                 (SELECT MAX(queuePosition) FROM controlQueue WHERE priority=pri) + 1,
                 :apikey
             )
+stmt;*/
+    
+    // temporary to just get testing, doesn't do what we said earlier.
+    $Q_REQUEST_CONTROL = <<<stmt
+            INSERT INTO controlQueue(priority, acquire, ttl, queuePosition, apiKey)
+            VALUES
+            ( ( SELECT priority FROM apikeys WHERE apikey=:apikey),
+             strftime('%s', 'now'),
+            :requestedLength,
+            (SELECT MAX(queuePosition) FROM controlQueue) + 1,
+            :apikey
+            )
 stmt;
     
-    $stmt = $db->prepare($Q_REQUEST_CONTROL);
-    $stmt->bindValue(':apikey', $requestJSON[0]->apikey);
-    $stmt->bindValue(':requestedLength', $requestJSON[0]->requestedLength);
+    $Q_REQUEST_CONTROL2 = <<<stmt
+            INSERT INTO controlQueue(priority, acquire, ttl, queuePosition, apiKey)
+            VALUES
+            ( (SELECT priority FROM apikeys WHERE apikey=:apikey),
+                strftime('%s', 'now'),
+                    3, 4, 'abc123')
+stmt;
+    
+    $stmt = $db->prepare($Q_REQUEST_CONTROL2);
+    $stmt->bindValue(':apikey', $requestJSON->apikey);
+    $stmt->bindValue(':requestedLength', $requestJSON->requestedLength);
     $res = $stmt->execute();
     
    if ($res === FALSE)
@@ -128,14 +152,15 @@ stmt;
         WHERE apikey=:apikey
 stmt;
 
-    $stmt = $db->prepare($Q_RETURN_DATA);
-    $stmt->bindValue(':apikey', $requestJSON[0]->apikey);
-    $res = $stmt->execute();
+    $stmt2 = $db->prepare($Q_RETURN_DATA);
+    $stmt2->bindValue(':apikey', $requestJSON->apikey);
+    $res = $stmt2->execute();
     
     if ($res === FALSE)
         failureJSON($db->lastErrorMsg());
         
     successJSON($res->fetchArray());
+    $db->close();
 });
 
 /**
@@ -152,11 +177,12 @@ $app->post('/control/release', function() use ($db) {
 stmt;
     
     $stmt = $db->prepare($Q_RELEASE_CONTROL);
-    $stmt->bindValue(':apikey', $requestJSON[0]->apikey);
+    $stmt->bindValue(':apikey', $requestJSON->apikey);
     $res = $stmt->execute();
     if ($res === FALSE)
         failureJSON($db->lastErrorMsg());    
     successJSON([]);
+      $db->close();
 });
 
 
@@ -178,14 +204,15 @@ stmt;
     if ($res === FALSE)
         failureJSON($db->lastErrorMsg());
     
-    rowsAsJSON($res);
+    echo rowsAsJSON($res);
+      $db->close();
 });
 
 /**
  * Set all valve states at once with a bitmask. Only 'enabled' valves will be affected.
  */
-$app->post('/valves', function() use ($db, $NUM_VALVES) {
-    if (!isset($requestJSON[0]->bitmask))
+$app->post('/valves', function() use ($db, $NUM_VALVES, $requestJSON) {
+    if (!isset($requestJSON->bitmask))
         failureJSON('No bitmask provided.');
     
     $stmt = $db->prepare("BEGIN TRANSACTION");
@@ -201,7 +228,7 @@ stmt;
 
         $stmt = $db->prepare($Q_UPDATE_VALVE);
         $stmt->bindValue(':id', $i);
-        $stmt->bindValue(':spraying', (($requestJSON[0]->bitmask) >> ($i - 1)) & 1);
+        $stmt->bindValue(':spraying', (($requestJSON->bitmask) >> ($i - 1)) & 1);
         $res = $stmt->execute();
         
         if ($res === FALSE)
@@ -213,6 +240,7 @@ stmt;
         failureJSON($db->lastErrorMsg());
     
     successJSON([]);
+      $db->close();
 });
 
 /**
@@ -235,17 +263,18 @@ stmt;
     if ($res === FALSE)
         failureJSON($db->lastErrorMsg());
     
-    rowsAsJSON($res);
+    echo rowsAsJSON($res);
+      $db->close();
 });
 
 /**
  * Set a specific valve.
  */
 $app->post('/valves/:id', function($valveID) use ($db) {
-    if (getControllingKey() !== $requestJSON[0]->apikey)
+    if (getControllingKey() !== $requestJSON->apikey)
         failureJSON('Not in control...');
         
-    if (!isset($requestJSON[0]->bitmask))
+    if (!isset($requestJSON->bitmask))
         failureJSON('No bitmask provided.');
     
     $Q_UPDATE_VALVE = <<<stmt
@@ -262,6 +291,7 @@ stmt;
         failureJSON($db->lastErrorMsg());
 
     successJSON([]);
+      $db->close();
 });
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -285,14 +315,15 @@ stmt;
     if ($res === FALSE)
         failureJSON($db->lastErrorMsg());
     
-    rowsAsJSON($res);
+    echo rowsAsJSON($res);
+      $db->close();
 });
 
 /**
  * Tell the server to play a specific pattern.
  */
 $app->post('/patterns/:id', function($patternID) use ($db) {
-    if (getControllingKey() !== $requestJSON[0]->apikey)
+    if (getControllingKey() !== $requestJSON->apikey)
         failureJSON('Not in control...');
     
     //TODO implement setCurrent
@@ -322,6 +353,7 @@ stmt;
         failureJSON($db->lastErrorMsg());
     
     successJSON([]);
+      $db->close();
 });
 
 // Start Slim application.

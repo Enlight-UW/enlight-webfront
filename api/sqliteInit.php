@@ -123,6 +123,89 @@ $stmt_insert_default_valves = <<<stmt
             (24, 'HR', 'Horizontal caliper jet ring', 0, 1)
 stmt;
 
+$stmt_insert_default_valves_legacy = [
+        "INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (1, 'V1', 'Vertical caliper jet 1', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (2, 'V2', 'Vertical caliper jet 2', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES
+            (3, 'V3', 'Vertical caliper jet 3', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (4, 'V4', 'Vertical caliper jet 4', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (5, 'V5', 'Vertical caliper jet 5', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (6, 'V6', 'Vertical caliper jet 6', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (7, 'V7', 'Vertical caliper jet 7', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (8, 'V8', 'Vertical caliper jet 8', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (9, 'V9', 'Vertical caliper jet 9', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (10, 'V10', 'Vertical caliper jet 10', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (11, 'VC', 'Vertical caliper jet center', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (12, 'VR', 'Vertical caliper jet ring', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (13, 'H1', 'Horizontal caliper jet 1 pointed up', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (14, 'H2', 'Horizontal caliper jet 2', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (15, 'H3', 'Horizontal caliper jet 3', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (16, 'H4', 'Horizontal caliper jet 4', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (17, 'H5', 'Horizontal caliper jet 5', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (18, 'H6', 'Horizontal caliper jet 6', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (19, 'H7', 'Horizontal caliper jet 7', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (20, 'H8', 'Horizontal caliper jet 8', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (21, 'H9', 'Horizontal caliper jet 9', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (22, 'H10', 'Horizontal caliper jet 10', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (23, 'HC', 'Horizontal caliper jet center', 0, 1)","
+        INSERT INTO valves (ID, name, description, spraying, enabled)
+        VALUES 
+            (24, 'HR', 'Horizontal caliper jet ring', 0, 1)"];
+
+$stmt_insert_testing_keys = <<<stmt
+        INSERT INTO apikeys (apikey, name, priority, date)
+        VALUES ('abc123', 'test api key 1', 10, strftime('%s','now'));
+        INSERT INTO apikeys (apikey, name, priority, date)
+        VALUES ('key1', 'test api key 2', 10, strftime('%s','now'));
+        INSERT INTO apikeys (apikey, name, priority, date)
+        VALUES ('key2', 'test api key 3', 20, strftime('%s','now'));
+stmt;
+
 //
 // Create tables
 //
@@ -147,6 +230,9 @@ runQueryAndPrintStatus($db, 'Creating pattern data table...', $stmt_create_table
 // Populate default valves
 //
 
-runQueryAndPrintStatus($db, 'Inserting default valves...', $stmt_insert_default_valves);
+foreach ($stmt_insert_default_valves_legacy as $s)
+    runQueryAndPrintStatus($db, 'Inserting default valves...', $s);
+runQueryAndPrintStatus($db, 'Inserting default keys...', $stmt_insert_testing_keys);
+$db->close();
 
 echo 'done.';
