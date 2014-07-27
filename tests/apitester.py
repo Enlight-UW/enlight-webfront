@@ -17,6 +17,6 @@ while True:
 	req = urllib2.Request('http://alexkersten.com/enlight/api/valves')
 	req.add_header('Content-Type', 'application/json')
 	response = urllib2.urlopen(req, json.dumps(data))
-	print response;
+	print response
 
 	time.sleep(1)
