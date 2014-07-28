@@ -35,7 +35,7 @@ The POST verb expects a `controllerID` (which an app will receive when it makes 
 + Response 200 (application/json)
     
         [
-            { "success": true, "queuePosition": 3, "eta": 15 }
+            { "success": true, "trueQueuePosition": 3, "eta": 15 }
         ]
 
 ## Request Control [/control/request]
