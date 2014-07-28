@@ -231,7 +231,6 @@ runQueryAndPrintStatus($db, 'Creating pattern data table...', $stmt_create_table
 
 foreach ($stmt_insert_default_valves_legacy as $s)
     runQueryAndPrintStatus($db, 'Inserting default valve...', $s);
-runQueryAndPrintStatus($db, 'Inserting default keys...', $stmt_insert_testing_keys);
 
 foreach($stmt_insert_testing_keys as $s)
     runQueryAndPrintStatus ($db, 'Inserting default key...', $s);
