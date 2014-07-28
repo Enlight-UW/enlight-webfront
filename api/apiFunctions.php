@@ -19,7 +19,7 @@ stmt;
 }
 
 function getAPIKeyPriority($db, $key) {
-    if (!verifyAPIKey($key))
+    if (!verifyAPIKey($db, $key))
         return 0;
 
     $Q_QUERY_API_KEY_PRIORITY = <<<stmt
@@ -28,7 +28,7 @@ function getAPIKeyPriority($db, $key) {
 stmt;
 
     $stmt = $db->prepare($Q_QUERY_API_KEY_PRIORITY);
-    $stmt->bindValue(':key', $key, SQLITE3_STRING);
+    $stmt->bindValue(':key', $key);
     //TODO: Error check
     $res = $stmt->execute();
     
@@ -52,7 +52,7 @@ stmt;
         return NULL;
     
     $ret = $res->fetchArray();
-    return $ret[0]['apikey'];    
+    return $ret['apikey'];    
 }
 /**
  * Takes a result set from a SQLite3 query and returns all the rows as JSON. If
