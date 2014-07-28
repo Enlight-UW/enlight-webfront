@@ -91,77 +91,99 @@ stmt;
 /**
  * Request control with this API key.
  */
-$app->post('/control/request', function () use ($db, $requestJSON) {
-    // Find last queue position in this priority - unless this key already has a
-    // control queue entry, in which case abort because we don't want one API key
-    // adding itself to the queue again before it expires. Note - the queue contains
-    // a history of all control requests by virtue of how it is constructed, so
-    // be sure to account only for still valid entries (expire time in the future).
-    
-    // This query will do a few things:
-    // 1) Find our current priority
-    // 2) Add us to the end of the queue 
-    //    a) but only if we don't already have a prioriy entry
-    //    b) and with an expiration time which is the requested time + latest expiration time in this priority queue
-    // 3) once that happens, extract the controllerID and return it to the client
-    
-/*    $Q_REQUEST_CONTROL = <<<stmt
+$app->post('/control/request',
+        function () use ($db, $requestJSON) {
+            // Method outline:
+            // 1) Find the position in the queue where this request should
+            //    belong.
+            //    a) If this API key already has a request in the queue, return
+            //       success true but don't update anything.
+            //    b) The position is based on the maximum existing queue
+            //       position for this priority level. If no one is queued, this
+            //       request is placed in position 0 for this priority level.
+            //       Position 0, therefore, doesn't necessarily mean that this
+            //       controller is definitely in control - there could be higher
+            //       priority controllers, which is why one should query the
+            //       control to see if they are indeed in control.
+            //       
+            // Find last queue position in this priority - unless this key already has a
+            // control queue entry, in which case abort because we don't want one API key
+            // adding itself to the queue again before it expires. Note - the queue contains
+            // a history of all control requests by virtue of how it is constructed, so
+            // be sure to account only for still valid entries (expire time in the future).
+            // This query will do a few things:
+            // 1) Find our current priority
+            // 2) Add us to the end of the queue 
+            //    a) but only if we don't already have a prioriy entry 
+            //    b) and with an expiration time which is the requested time + latest expiration time in this priority queue
+            // 3) once that happens, extract the controllerID and return it to the client
+            //                 MAX(((SELECT MAX(acquire) FROM controlQueue WHERE priority=pri) + :requestedLength) UNION strftime('%s','now')),
+            // maybe we'll update acquired later when we actually let it be acquired? once it hits the top of the priority queue.
+            //TODO: time based/expiration!
+
+            $Q_FIND_NEXT_QUEUE_POSITION = <<<stmt
+            SELECT MAX(queuePosition) FROM controlQueue WHERE priority=:pri
+stmt;
+
+            $pri = getAPIKeyPriority($db, $requestJSON->apikey);
+            echo 'PRIORITY IS: ' . $pri;
+
+            $stmt = $db->prepare($Q_FIND_NEXT_QUEUE_POSITION);
+            $stmt->bindValue(':apikey', $requestJSON->apikey);
+            $stmt->bindValue('pri', $pri);
+
+            $res = $stmt->execute();
+            $pos = -999;
+            while ($r = $res->fetchArray()) {
+                if (isset($r['MAX(queuePosition)'])) {
+                    echo 'max is ' . $r['MAX(queuePosition)'];
+                    $pos = $r['MAX(queuePosition)'] + 1;
+                    echo 'pos is ' . $pos;
+                } else {
+                    echo 'unset !';
+                    $pos = 0;
+                }
+            }
+
+            $Q_REQUEST_CONTROL = <<<stmt
         INSERT INTO controlQueue (priority, acquire, ttl, queuePosition, apikey)
         VALUES
             (
-                (SELECT priority FROM apikeys WHERE apikey=:apikey) AS pri,
-                MAX((SELECT MAX(acquire) FROM controlQueue WHERE priority=pri) + :requestedLength UNION strftime('%s','now')),
+                (SELECT priority FROM apikeys AS pri WHERE apikey=:apikey),
+                strftime('%s','now'),
                 :requestedLength,
-                (SELECT MAX(queuePosition) FROM controlQueue WHERE priority=pri) + 1,
+                :pos,
                 :apikey
             )
-stmt;*/
-    
-    // temporary to just get testing, doesn't do what we said earlier.
-    $Q_REQUEST_CONTROL = <<<stmt
-            INSERT INTO controlQueue(priority, acquire, ttl, queuePosition, apiKey)
-            VALUES
-            ( ( SELECT priority FROM apikeys WHERE apikey=:apikey),
-             strftime('%s', 'now'),
-            :requestedLength,
-            (SELECT MAX(queuePosition) FROM controlQueue) + 1,
-            :apikey
-            )
 stmt;
-    
-    $Q_REQUEST_CONTROL2 = <<<stmt
-            INSERT INTO controlQueue(priority, acquire, ttl, queuePosition, apiKey)
-            VALUES
-            ( (SELECT priority FROM apikeys WHERE apikey=:apikey),
-                strftime('%s', 'now'),
-                    3, 4, 'abc123')
-stmt;
-    
-    $stmt = $db->prepare($Q_REQUEST_CONTROL2);
-    $stmt->bindValue(':apikey', $requestJSON->apikey);
-    $stmt->bindValue(':requestedLength', $requestJSON->requestedLength);
-    $res = $stmt->execute();
-    
-   if ($res === FALSE)
-        failureJSON($db->lastErrorMsg());
-    
-    // Ok, now just run a select and return the data.
-    $Q_RETURN_DATA = <<<stmt
-        SELECT acquire, ttl, priority, controllerID, queuePosition
+
+
+            $stmt = $db->prepare($Q_REQUEST_CONTROL);
+            $stmt->bindValue(':apikey', $requestJSON->apikey);
+            $stmt->bindValue(':requestedLength', $requestJSON->requestedLength);
+            $stmt->bindParam(':pos', $pos);
+
+            //TODO: error handling
+            $res = $stmt->execute();
+
+
+// Ok, now just run a select and return the data.
+            $Q_RETURN_DATA = <<<stmt
+        SELECT ttl, controllerID
         FROM controlQueue
         WHERE apikey=:apikey
 stmt;
 
-    $stmt2 = $db->prepare($Q_RETURN_DATA);
-    $stmt2->bindValue(':apikey', $requestJSON->apikey);
-    $res = $stmt2->execute();
-    
-    if ($res === FALSE)
-        failureJSON($db->lastErrorMsg());
-        
-    successJSON($res->fetchArray());
-    $db->close();
-});
+            $stmt2 = $db->prepare($Q_RETURN_DATA);
+            $stmt2->bindValue(':apikey', $requestJSON->apikey);
+            $res = $stmt2->execute();
+
+            if ($res === FALSE)
+                failureJSON($db->lastErrorMsg());
+
+            successJSON($res->fetchArray());
+            $db->close();
+        });
 
 /**
  * Release any current controls.
