@@ -197,14 +197,13 @@ $stmt_insert_default_valves_legacy = [
         VALUES 
             (24, 'HR', 'Horizontal caliper jet ring', 0, 1)"];
 
-$stmt_insert_testing_keys = <<<stmt
-        INSERT INTO apikeys (apikey, name, priority, date)
-        VALUES ('abc123', 'test api key 1', 10, strftime('%s','now'));
-        INSERT INTO apikeys (apikey, name, priority, date)
-        VALUES ('key1', 'test api key 2', 10, strftime('%s','now'));
-        INSERT INTO apikeys (apikey, name, priority, date)
-        VALUES ('key2', 'test api key 3', 20, strftime('%s','now'));
-stmt;
+$stmt_insert_testing_keys = [
+        "INSERT INTO apikeys (apikey, name, priority, date) VALUES ('abc123', 'test api key 1', 10, strftime('%s','now'))",
+        "INSERT INTO apikeys (apikey, name, priority, date) VALUES ('pri20a', '20 priority test key a', 20, strftime('%s','now'))",
+        "INSERT INTO apikeys (apikey, name, priority, date) VALUES ('pri20b', '20 priority test key b', 20, strftime('%s','now'))",
+        "INSERT INTO apikeys (apikey, name, priority, date) VALUES ('pri30a', '30 priority test key a', 30, strftime('%s','now'))",
+        "INSERT INTO apikeys (apikey, name, priority, date) VALUES ('pri30b', '30 priority test key b', 30, strftime('%s','now'))",
+    ];
 
 //
 // Create tables
@@ -231,8 +230,12 @@ runQueryAndPrintStatus($db, 'Creating pattern data table...', $stmt_create_table
 //
 
 foreach ($stmt_insert_default_valves_legacy as $s)
-    runQueryAndPrintStatus($db, 'Inserting default valves...', $s);
+    runQueryAndPrintStatus($db, 'Inserting default valve...', $s);
 runQueryAndPrintStatus($db, 'Inserting default keys...', $stmt_insert_testing_keys);
+
+foreach($stmt_insert_testing_keys as $s)
+    runQueryAndPrintStatus ($db, 'Inserting default key...', $s);
+
 $db->close();
 
 echo 'done.';
