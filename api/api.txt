@@ -8,22 +8,39 @@ The web API for the fountain. All API users must acquire an API key, which will 
 First, an API user must request control to be allowed a timeslice in controlling the fountain.
 
 ## Query Control [/control/query]
-Before attempting to acquire control, you can query to see if another API user has control. If an object is returned here, that API user currently has control of the fountain. Only if your API key has a higher priority than them will your request for control succeed. It is not necessary to invoke this before requesting control, but it will let you know if such a request would fail or succeed. If a queue position is 0, that user is currently controlling the fountain. Queue positions start at 1 and increase, per priority level.
+There are two ways to query control - the GET verb, which will return the entire list of queued controllers with their respective queue positions and priorities, and the POST verb, which will return a queue position and time estimate based on a given `controllerID`.
 
 ### Query Control [GET]
+A controller is in control if its priority is the highest of all other entries in the queue, and its queue position is 0. There may be multiple items with `queuePosition` set to `0`, but only the one with the highest priority will be in control. The `acquire` field represents the time at which the request was placed, not when the controller gained or gains control. `ttl` represents how long the controller will be in control, barring any higher priority overrides.
+
 + Response 200 (application/json)
 
         [
-            { "controllerID": 1, "acquired": 12340000, "expires": 12340015, "priority": 4, "queuePosition": 0 },
-            { "controllerID": 2, "acquired": 12340008, "expires": 12340035, "priority": 4, "queuePosition": 1 },
-            { "controllerID": 45, "acquired": 12340010, "expires": 12340045, "priority": 4, "queuePosition": 2 },
-            { "controllerID": 69, "acquired": 12340011, "expires": 12340055, "priority": 3, "queuePosition": 1 },
-            { "controllerID": 120, "acquired": 12340014, "expires": 12340060, "priority": 3, "queuePosition": 2 }
+            { "controllerID": 1, "acquire": 12340000, "ttl": 15, "priority": 4, "queuePosition": 0 },
+            { "controllerID": 2, "acquire": 12340008, "ttl": 35, "priority": 4, "queuePosition": 1 },
+            { "controllerID": 45, "acquire": 12340010, "ttl": 45, "priority": 4, "queuePosition": 2 },
+            { "controllerID": 69, "acquire": 12340011, "ttl": 10, "priority": 3, "queuePosition": 0 },
+            { "controllerID": 120, "acquire": 12340014, "ttl": 10, "priority": 3, "queuePosition": 1 }
         ]
             
+### Query Control [POST]
+The POST verb expects a `controllerID` (which an app will receive when it makes a queue request), and the returned information will indicate whether that identified `controllerID` is in control, and if not, how much longer it should expect to wait to gain control.
+
++ Request (application/json)
+
+        [
+            { "apikey": "some alphanumeric api key", "controlerID": 123 }
+        ]
+        
++ Response 200 (application/json)
+    
+        [
+            { "success": true, "queuePosition": 3, "eta": 15 }
+        ]
 
 ## Request Control [/control/request]
-If your internal priority is higher than the current user (or no one else is using the API), you will be leased the ability to invoke commands. A control request can contain a desired length of control, and (based on load balancing or time-sharing or other factors) the server will respond with the actual acquisition time of the control request. Issuing another control request while you have one in the queue will not do anything. The server will round-robin, with precedence given to higher priority levels. If `queuePosition` is 0 in the return, then you have directly taken control. Otherwise, you will have to wait. `success` will only be false if some kind of error (like authentication) happens. Being queued is not considered an error, so you might see `success` true even if you have to wait. If your client has to wait, the `acquire` field will try to indicate approximately when you can expect control. The requested time will be added to this to determine an expiration time. It is still possible this window might not be available to you even after waiting if someone with a higher priority comes along. In that case, just keep requesting a position and eventually you should get one...
+If your internal priority is higher than the current user (or no one else is using the API), you will be leased the ability to invoke commands. A control request contains a desired length of control. After getting a `controllerID` from this request, check it with a POST to `/control/query` to see if you're actually in control.
+
 ### Request Control [POST]
 + Request (application/json)
 
@@ -31,7 +48,7 @@ If your internal priority is higher than the current user (or no one else is usi
         
 + Response 200 (application/json)
 
-        { "success": true, "acquire": 12340010, "ttl": 15, "priority": 3, "controllerID": 45, "queuePosition": 0 }
+        { "success": true, "ttl: 15, "controllerID": 45 }
         
 ## Release Control [/control/release]
 If you decide to release your control early, you can hit this endpoint. This will open the control up for other users. The server doesn't notify other users of this, though - they'd still have to query to see that it opened up.
@@ -39,7 +56,7 @@ If you decide to release your control early, you can hit this endpoint. This wil
 ### Release Control [POST]
 + Request (application/json)
 
-        { "apikey": "some alphanumeric api key" }
+        {  "apikey": "some alphanumeric api key", "controllerID": 15 }
 
 + Response 200 (application/json)
 
@@ -86,7 +103,7 @@ If you want to set all the valves at once via a binary bitmask with each bit fro
 
 + Request
 
-        { "apikey": "some alphanumeric api key", "bitmask": 1024 }
+        { "apikey": "some alphanumeric api key", "controllerID": 15, "bitmask": 1024 }
     
 + Response 200 (application/json)
 
@@ -107,7 +124,7 @@ A single valve object with the ability to query or set properties.
 Set some properties about the valve, like whether it's on or off.
 + Request (application/json)
 
-        { "apikey": "some alphanumeric api key", "spraying": true }
+        { "apikey": "some alphanumeric api key", "controllerID": 15, "spraying": true }
 
 + Response 200 (application/json)
 
@@ -141,7 +158,7 @@ Attempt to start playing a given pattern. This requires control of the fountain,
 
 + Request (application/json)
 
-        { "apikey": "some alphanumeric api key", "setCurrent": true }
+        { "apikey": "some alphanumeric api key", "controllerID": 15, "setCurrent": true }
         
 + Response 200 (application/json)
 
