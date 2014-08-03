@@ -89,6 +89,17 @@ stmt;
 });
 
 /**
+ * Get info about this specific controllerID in the queue.
+ */
+$app->post('/control/query', function() use ($db, $requestJSON) {
+    if (!isset($requestJSON->controllerID)) {
+        failureJSON("No controllerID specified.");
+    }
+    
+    echo 'OK';
+});
+
+/**
  * Request control with this API key.
  */
 $app->post('/control/request',
@@ -121,7 +132,7 @@ $app->post('/control/request',
             // maybe we'll update acquired later when we actually let it be acquired? once it hits the top of the priority queue.
             //TODO: time based/expiration!
 
-            $Q_FIND_NEXT_QUEUE_POSITION = <<<stmt
+      /*      $Q_FIND_NEXT_QUEUE_POSITION = <<<stmt
             SELECT MAX(queuePosition) FROM controlQueue WHERE priority=:pri
 stmt;
 
@@ -136,16 +147,18 @@ stmt;
             $pos = -999;
             while ($r = $res->fetchArray()) {
                 if (isset($r['MAX(queuePosition)'])) {
-                    echo 'max is ' . $r['MAX(queuePosition)'];
                     $pos = $r['MAX(queuePosition)'] + 1;
-                    echo 'pos is ' . $pos;
                 } else {
-                    echo 'unset !';
                     $pos = 0;
                 }
-            }
+            }*/
 
             $Q_REQUEST_CONTROL = <<<stmt
+                    INSERT INTO controlQueue (priority, acquire, ttl, queuePosition, apikey)
+                    VALUES
+                    (1, 2, 3, 4, "abc123")
+stmt;
+            /*
         INSERT INTO controlQueue (priority, acquire, ttl, queuePosition, apikey)
         VALUES
             (
@@ -155,20 +168,19 @@ stmt;
                 :pos,
                 :apikey
             )
-stmt;
-
-
+stmt; */
+            
             $stmt = $db->prepare($Q_REQUEST_CONTROL);
-            $stmt->bindValue(':apikey', $requestJSON->apikey);
-            $stmt->bindValue(':requestedLength', $requestJSON->requestedLength);
-            $stmt->bindParam(':pos', $pos);
+          //  $stmt->bindValue(':apikey', $requestJSON->apikey);
+           // $stmt->bindValue(':requestedLength', $requestJSON->requestedLength);
+           // $stmt->bindParam(':pos', $pos);
 
             //TODO: error handling
             $res = $stmt->execute();
 
 
 // Ok, now just run a select and return the data.
-            $Q_RETURN_DATA = <<<stmt
+     /*       $Q_RETURN_DATA = <<<stmt
         SELECT ttl, controllerID
         FROM controlQueue
         WHERE apikey=:apikey
@@ -181,7 +193,7 @@ stmt;
             if ($res === FALSE)
                 failureJSON($db->lastErrorMsg());
 
-            successJSON($res->fetchArray());
+            successJSON($res->fetchArray());*/
             $db->close();
         });
 
