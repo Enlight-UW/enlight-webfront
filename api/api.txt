@@ -147,7 +147,7 @@ Retrieve a list of known patterns. This can also be used to determine if a patte
             { "id": 4, "name": "Pattern name 4", "active": false }
         ]
         
-## Pattern [/pattern/{id}]
+## Pattern [/patterns/{id}]
 
 + Parameters
 
