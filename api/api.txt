@@ -15,28 +15,24 @@ A controller is in control if its priority is the highest of all other entries i
 
 + Response 200 (application/json)
 
-        [
+        { "success": "true", "items": [
             { "controllerID": 1, "acquire": 12340000, "ttl": 15, "priority": 4, "queuePosition": 0 },
             { "controllerID": 2, "acquire": 12340008, "ttl": 35, "priority": 4, "queuePosition": 1 },
             { "controllerID": 45, "acquire": 12340010, "ttl": 45, "priority": 4, "queuePosition": 2 },
             { "controllerID": 69, "acquire": 12340011, "ttl": 10, "priority": 3, "queuePosition": 0 },
             { "controllerID": 120, "acquire": 12340014, "ttl": 10, "priority": 3, "queuePosition": 1 }
-        ]
+        ] }
             
 ### Query Control [POST]
 The POST verb expects a `controllerID` (which an app will receive when it makes a queue request), and the returned information will indicate whether that identified `controllerID` is in control, and if not, how much longer it should expect to wait to gain control.
 
 + Request (application/json)
 
-        [
-            { "apikey": "some alphanumeric api key", "controllerID": 123 }
-        ]
+        { "apikey": "some alphanumeric api key", "controllerID": 123 }
         
 + Response 200 (application/json)
     
-        [
-            { "success": true, "trueQueuePosition": 3, "eta": 15 }
-        ]
+        { "success": true, "trueQueuePosition": 3, "eta": 15 }
 
 ## Request Control [/control/request]
 If your internal priority is higher than the current user (or no one else is using the API), you will be leased the ability to invoke commands. A control request contains a desired length of control. After getting a `controllerID` from this request, check it with a POST to `/control/query` to see if you're actually in control.
@@ -71,32 +67,32 @@ Valves can be queried for their state. Some valves may be disabled due to malfun
 ### Query [GET]
 + Response 200 (application/json)
 
-        [
-          { "id": 1, "name": "V1", "spraying": true, "enabled": true },
-          { "id": 2, "name": "V2", "spraying": true, "enabled": true },
-          { "id": 3, "name": "V3", "spraying": true, "enabled": true },
-          { "id": 4, "name": "V4", "spraying": true, "enabled": true },
-          { "id": 5, "name": "V5", "spraying": true, "enabled": true },
-          { "id": 6, "name": "V6", "spraying": true, "enabled": true },
-          { "id": 7, "name": "V7", "spraying": true, "enabled": true },
-          { "id": 8, "name": "V8", "spraying": true, "enabled": true },
-          { "id": 9, "name": "V9", "spraying": true, "enabled": true },
-          { "id": 10, "name": "V10", "spraying": true, "enabled": true },
-          { "id": 11, "name": "VC", "spraying": true, "enabled": true },
-          { "id": 12, "name": "VR", "spraying": true, "enabled": true },
-          { "id": 13, "name": "H1", "spraying": true, "enabled": true },
-          { "id": 14, "name": "H2", "spraying": true, "enabled": true },
-          { "id": 15, "name": "H3", "spraying": true, "enabled": true },
-          { "id": 16, "name": "H4", "spraying": true, "enabled": true },
-          { "id": 17, "name": "H5", "spraying": true, "enabled": true },
-          { "id": 18, "name": "H6", "spraying": true, "enabled": true },
-          { "id": 19, "name": "H7", "spraying": true, "enabled": true },
-          { "id": 20, "name": "H8", "spraying": true, "enabled": true },
-          { "id": 21, "name": "H9", "spraying": true, "enabled": true },
-          { "id": 22, "name": "H10", "spraying": true, "enabled": true },
-          { "id": 23, "name": "HC", "spraying": true, "enabled": true },
-          { "id": 24, "name": "HR", "spraying": true, "enabled": true }
-        ]
+        { "success": "true", "items": [
+            { "id": 1, "name": "V1", "spraying": true, "enabled": true },
+            { "id": 2, "name": "V2", "spraying": true, "enabled": true },
+            { "id": 3, "name": "V3", "spraying": true, "enabled": true },
+            { "id": 4, "name": "V4", "spraying": true, "enabled": true },
+            { "id": 5, "name": "V5", "spraying": true, "enabled": true },
+            { "id": 6, "name": "V6", "spraying": true, "enabled": true },
+            { "id": 7, "name": "V7", "spraying": true, "enabled": true },
+            { "id": 8, "name": "V8", "spraying": true, "enabled": true },
+            { "id": 9, "name": "V9", "spraying": true, "enabled": true },
+            { "id": 10, "name": "V10", "spraying": true, "enabled": true },
+            { "id": 11, "name": "VC", "spraying": true, "enabled": true },
+            { "id": 12, "name": "VR", "spraying": true, "enabled": true },
+            { "id": 13, "name": "H1", "spraying": true, "enabled": true },
+            { "id": 14, "name": "H2", "spraying": true, "enabled": true },
+            { "id": 15, "name": "H3", "spraying": true, "enabled": true },
+            { "id": 16, "name": "H4", "spraying": true, "enabled": true },
+            { "id": 17, "name": "H5", "spraying": true, "enabled": true },
+            { "id": 18, "name": "H6", "spraying": true, "enabled": true },
+            { "id": 19, "name": "H7", "spraying": true, "enabled": true },
+            { "id": 20, "name": "H8", "spraying": true, "enabled": true },
+            { "id": 21, "name": "H9", "spraying": true, "enabled": true },
+            { "id": 22, "name": "H10", "spraying": true, "enabled": true },
+            { "id": 23, "name": "HC", "spraying": true, "enabled": true },
+            { "id": 24, "name": "HR", "spraying": true, "enabled": true }
+        ] }
         
 ### Set [POST]
 If you want to set all the valves at once via a binary bitmask with each bit from the LSB representing the ID of one of the valves, use this endpoint. Otherwise, identify a valve and set it individually. A 1 represents on, and a 0 represents off.
@@ -141,11 +137,11 @@ Retrieve a list of known patterns. This can also be used to determine if a patte
 
 + Response 200 (application/json)
 
-        [
+        { "success": "true", "items": [
             { "id": 1, "name": "Pattern name 1", "active": true },
             { "id": 3, "name": "Pattern name 3", "active": false },
             { "id": 4, "name": "Pattern name 4", "active": false }
-        ]
+        ] }
         
 ## Pattern [/patterns/{id}]
 
