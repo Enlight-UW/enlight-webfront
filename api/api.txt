@@ -1,5 +1,6 @@
 FORMAT: 1A
 HOST: http://www.example.com
+VERSION: 28 AUG 2014
 
 # enlight
 The web API for the fountain. All API users must acquire an API key, which will have certain properties like a priority level and internal identifiers on the server.
