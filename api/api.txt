@@ -1,6 +1,6 @@
 FORMAT: 1A
 HOST: http://www.example.com
-VERSION: 28 AUG 2014
+VERSION: 1 SEP 2014
 
 # enlight
 The web API for the fountain. All API users must acquire an API key, which will have certain properties like a priority level and internal identifiers on the server.
@@ -69,30 +69,30 @@ Valves can be queried for their state. Some valves may be disabled due to malfun
 + Response 200 (application/json)
 
         { "success": "true", "items": [
-            { "id": 1, "name": "V1", "spraying": true, "enabled": true },
-            { "id": 2, "name": "V2", "spraying": true, "enabled": true },
-            { "id": 3, "name": "V3", "spraying": true, "enabled": true },
-            { "id": 4, "name": "V4", "spraying": true, "enabled": true },
-            { "id": 5, "name": "V5", "spraying": true, "enabled": true },
-            { "id": 6, "name": "V6", "spraying": true, "enabled": true },
-            { "id": 7, "name": "V7", "spraying": true, "enabled": true },
-            { "id": 8, "name": "V8", "spraying": true, "enabled": true },
-            { "id": 9, "name": "V9", "spraying": true, "enabled": true },
-            { "id": 10, "name": "V10", "spraying": true, "enabled": true },
-            { "id": 11, "name": "VC", "spraying": true, "enabled": true },
-            { "id": 12, "name": "VR", "spraying": true, "enabled": true },
-            { "id": 13, "name": "H1", "spraying": true, "enabled": true },
-            { "id": 14, "name": "H2", "spraying": true, "enabled": true },
-            { "id": 15, "name": "H3", "spraying": true, "enabled": true },
-            { "id": 16, "name": "H4", "spraying": true, "enabled": true },
-            { "id": 17, "name": "H5", "spraying": true, "enabled": true },
-            { "id": 18, "name": "H6", "spraying": true, "enabled": true },
-            { "id": 19, "name": "H7", "spraying": true, "enabled": true },
-            { "id": 20, "name": "H8", "spraying": true, "enabled": true },
-            { "id": 21, "name": "H9", "spraying": true, "enabled": true },
-            { "id": 22, "name": "H10", "spraying": true, "enabled": true },
-            { "id": 23, "name": "HC", "spraying": true, "enabled": true },
-            { "id": 24, "name": "HR", "spraying": true, "enabled": true }
+            { "ID": 1, "name": "V1", "spraying": 1, "enabled": 1 },
+            { "ID": 2, "name": "V2", "spraying": 1, "enabled": 1 },
+            { "ID": 3, "name": "V3", "spraying": 1, "enabled": 1 },
+            { "ID": 4, "name": "V4", "spraying": 1, "enabled": 1 },
+            { "ID": 5, "name": "V5", "spraying": 1, "enabled": 1 },
+            { "ID": 6, "name": "V6", "spraying": 1, "enabled": 1 },
+            { "ID": 7, "name": "V7", "spraying": 1, "enabled": 1 },
+            { "ID": 8, "name": "V8", "spraying": 1, "enabled": 1 },
+            { "ID": 9, "name": "V9", "spraying": 1, "enabled": 1 },
+            { "ID": 10, "name": "V10", "spraying": 1, "enabled": 1 },
+            { "ID": 11, "name": "VC", "spraying": 1, "enabled": 1 },
+            { "ID": 12, "name": "VR", "spraying": 1, "enabled": 1 },
+            { "ID": 13, "name": "H1", "spraying": 1, "enabled": 1 },
+            { "ID": 14, "name": "H2", "spraying": 1, "enabled": 1 },
+            { "ID": 15, "name": "H3", "spraying": 1, "enabled": 1 },
+            { "ID": 16, "name": "H4", "spraying": 1, "enabled": 1 },
+            { "ID": 17, "name": "H5", "spraying": 1, "enabled": 1 },
+            { "ID": 18, "name": "H6", "spraying": 1, "enabled": 1 },
+            { "ID": 19, "name": "H7", "spraying": 1, "enabled": 1 },
+            { "ID": 20, "name": "H8", "spraying": 1, "enabled": 1 },
+            { "ID": 21, "name": "H9", "spraying": 1, "enabled": 1 },
+            { "ID": 22, "name": "H10", "spraying": 1, "enabled": 1 },
+            { "ID": 23, "name": "HC", "spraying": 1, "enabled": 1 },
+            { "ID": 24, "name": "HR", "spraying": 1, "enabled": 1 }
         ] }
         
 ### Set [POST]
@@ -115,13 +115,13 @@ A single valve object with the ability to query or set properties.
 ### Query [GET]
 + Response 200 (application/json)
 
-         { "id": {id}, "name": "H9", "spraying": true, "enabled": true }
+         { "ID": {id}, "name": "H9", "spraying": 1, "enabled": 1 }
 
 ### Set [POST]
 Set some properties about the valve, like whether it's on or off.
 + Request (application/json)
 
-        { "apikey": "some alphanumeric api key", "controllerID": 15, "spraying": true }
+        { "apikey": "some alphanumeric api key", "controllerID": 15, "spraying": 1 }
 
 + Response 200 (application/json)
 
@@ -139,9 +139,9 @@ Retrieve a list of known patterns. This can also be used to determine if a patte
 + Response 200 (application/json)
 
         { "success": "true", "items": [
-            { "id": 1, "name": "Pattern name 1", "active": true },
-            { "id": 3, "name": "Pattern name 3", "active": false },
-            { "id": 4, "name": "Pattern name 4", "active": false }
+            { "ID": 1, "name": "Pattern name 1", "active": 1 },
+            { "ID": 3, "name": "Pattern name 3", "active": 0 },
+            { "ID": 4, "name": "Pattern name 4", "active": 0 }
         ] }
         
 ## Pattern [/patterns/{id}]
